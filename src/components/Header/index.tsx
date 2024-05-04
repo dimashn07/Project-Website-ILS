@@ -166,7 +166,7 @@ const Header = () => {
                   href="/signin"
                   className="hidden px-7 py-3 text-base font-medium text-dark hover:opacity-70 dark:text-white md:block"
                 >
-                  Sign In
+                  Layanan
                 </Link>
                 <Link
                   href="/signup"
