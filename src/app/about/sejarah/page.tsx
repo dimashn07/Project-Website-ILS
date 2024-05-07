@@ -1,7 +1,7 @@
 import React from 'react';
 import Breadcrumb from "@/components/Common/Breadcrumb";
 
-const VisiMisi = () => {
+const Sejarah = () => {
   return (
     <>
       <Breadcrumb
@@ -31,4 +31,4 @@ const VisiMisi = () => {
   );
 };
 
-export default VisiMisi;
+export default Sejarah;
