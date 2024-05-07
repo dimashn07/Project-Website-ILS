@@ -15,14 +15,20 @@ const menuData: Menu[] = [
     submenu: [
       {
         id: 21,
-        title: "Tugas & Fungsi",
-        path: "/tugas-fungsi",
+        title: "Sejarah",
+        path: "/about/sejarah",
         newTab: false,
       },
       {
         id: 22,
+        title: "Visi & Misi",
+        path: "/about/visimisi",
+        newTab: false,
+      },
+      {
+        id: 23,
         title: "Struktur Organisasi",
-        path: "/struktur-organisasi",
+        path: "/about/strukturorganisasi",
         newTab: false,
       },
     ],
