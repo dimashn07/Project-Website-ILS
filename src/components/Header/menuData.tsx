@@ -22,13 +22,13 @@ const menuData: Menu[] = [
       {
         id: 22,
         title: "Visi & Misi",
-        path: "/about/visi-misi",
+        path: "/about/visimisi",
         newTab: false,
       },
       {
         id: 23,
         title: "Struktur Organisasi",
-        path: "/about/struktur-organisasi",
+        path: "/about/strukturorganisasi",
         newTab: false,
       },
     ],

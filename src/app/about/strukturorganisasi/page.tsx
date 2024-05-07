@@ -1,14 +1,14 @@
 import React from 'react';
 import Breadcrumb from "@/components/Common/Breadcrumb";
 
-const Sejarah = () => {
+const VisiMisi = () => {
   return (
     <>
       <Breadcrumb
          pageName="Sejarah"
         description="Sejarah Lembaga Inisiatif lampung Sehat"
       />
-      <section className="pb-[50px] pt-[10px]">
+      <section className="pb-[30px] pt-[10px]">
         <div className="container">
           <div className="mx-4 max-w-1.5x1.5">
             <p className="text-lg mb-8">
@@ -31,4 +31,4 @@ const Sejarah = () => {
   );
 };
 
-export default Sejarah;
+export default VisiMisi;
