@@ -34,5 +34,4 @@ export default function RootLayout({
   );
 }
 
-import { Providers } from "./providers";import SessionProvider from "./sessionProvider";
-
+import { Providers } from "./providers";

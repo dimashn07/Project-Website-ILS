@@ -7,7 +7,7 @@ const LoginPage = () => {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const router = useRouter();
+  const router = useRouter(); 
 
   const handleForgotPasswordClick = () => {
     router.push('/forgot-password');
