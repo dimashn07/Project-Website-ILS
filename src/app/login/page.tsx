@@ -2,18 +2,18 @@
 import React, { useState } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter } from 'next/navigation';
-import { createUserWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../firebaseConfig";
 
-const SignUpPage = () => {
+const LoginPage = () => {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [passwordAgain, setPasswordAgain] = useState('');
   const router = useRouter();
 
-  const signUp = () => {
-    createUserWithEmailAndPassword(auth, email, password);
+  const handleForgotPasswordClick = () => {
+    router.push('/forgot-password');
+  };
+  const handleSignUpClick = () => {
+    router.push('/signup');
   };
 
   return (
@@ -29,7 +29,7 @@ const SignUpPage = () => {
                 <div className="mb-8 flex items-center justify-center">
                   <span className="hidden h-[1px] w-full max-w-[60px] bg-body-color/50 sm:block"></span>
                   <p className="w-full px-5 text-center text-base font-medium text-body-color">
-                    Daftar Akun Admin
+                    Masuk dengan Akun Admin
                   </p>
                   <span className="hidden h-[1px] w-full max-w-[60px] bg-body-color/50 sm:block"></span>
                 </div>
@@ -43,43 +43,36 @@ const SignUpPage = () => {
                     className="border-stroke dark:text-body-color-dark dark:shadow-two w-full rounded-sm border bg-[#f8f8f8] px-6 py-3 text-base text-body-color outline-none transition-all duration-300 focus:border-primary dark:border-transparent dark:bg-[#2C303B] dark:focus:border-primary dark:focus:shadow-none"
                   />
                 </div>
-                <div className="mb-8">
-                  <label htmlFor="password" className="mb-3 block text-sm text-dark dark:text-white">
+                <div className="flex items-center justify-between">
+                  <label htmlFor="password" className="block text-sm text-dark dark:text-white">
                     Kata Sandi
                   </label>
-                  <input
-                    type="password"
-                    id="password"
-                    name="password"
-                    placeholder="Masukkan kata sandi"
-                    autoComplete="current-password"
-                    onChange={(e) => setPassword(e.target.value)}
-                    required
-                    className="border-stroke dark:text-body-color-dark dark:shadow-two w-full rounded-sm border bg-[#f8f8f8] px-6 py-3 text-base text-body-color outline-none transition-all duration-300 focus:border-primary dark:border-transparent dark:bg-[#2C303B] dark:focus:border-primary dark:focus:shadow-none"
-                  />
+                  <div className="text-sm">
+                    <span onClick={handleForgotPasswordClick} className="cursor-pointer font-semibold text-primary hover:underline">
+                      Lupa Kata Sandi?
+                    </span>
+                  </div>
                 </div>
-                <div className="mb-8">
-                  <label htmlFor="password" className="mb-3 block text-sm text-dark dark:text-white">
-                    Konfirmasi Kata Sandi
-                  </label>
-                  <input
-                    type="password"
-                    id="passwordAgain"
-                    name="passwordAgain"
-                    placeholder="Masukkan konfirmasi kata sandi"
-                    autoComplete="current-password"
-                    onChange={(e) => setPasswordAgain(e.target.value)}
-                    required
+                <div className="mt-2 mb-8">
+                  <input 
+                    type="password" id="password" name="password" placeholder="Masukkan kata sandi"
+                    autoComplete="current-password" onChange={(e) => setPassword(e.target.value)} required
                     className="border-stroke dark:text-body-color-dark dark:shadow-two w-full rounded-sm border bg-[#f8f8f8] px-6 py-3 text-base text-body-color outline-none transition-all duration-300 focus:border-primary dark:border-transparent dark:bg-[#2C303B] dark:focus:border-primary dark:focus:shadow-none"
                   />
                 </div>
                 <div className="mb-6">
                   <button 
-                    onClick={() => signUp()}
-                    disabled={!email || !password || !passwordAgain || password!=passwordAgain}
-                    className="disabled:opacity-40 shadow-submit dark:shadow-submit-dark flex w-full items-center justify-center rounded-sm bg-primary px-9 py-4 text-base font-medium text-white duration-300 hover:bg-primary/90">
-                    Daftar
+                    onClick={() => signIn('credentials', {email, password, redirect: true, callbackUrl: '/admin'})}
+                    disabled={!email || !password}
+                    className="shadow-submit dark:shadow-submit-dark flex w-full items-center justify-center rounded-sm bg-primary px-9 py-4 text-base font-medium text-white duration-300 hover:bg-primary/90">
+                    Masuk
                   </button>
+                </div>
+                <div className="text-center text-base font-medium text-body-color">
+                  Tambah Akun? {" "}
+                  <span onClick={handleSignUpClick} className="cursor-pointer text-primary hover:underline" >
+                    Daftar
+                  </span>
                 </div>
               </div>
             </div>
@@ -90,4 +83,4 @@ const SignUpPage = () => {
   );
 };
 
-export default SignUpPage;
+export default LoginPage;

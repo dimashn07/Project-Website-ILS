@@ -1,11 +1,40 @@
-import { GoogleMap, LoadScript } from '@react-google-maps/api';
+import { GoogleMap, LoadScript, Marker, InfoWindow} from '@react-google-maps/api';
 import Image from "next/image";
 import Link from "next/link";
+import React, { useState , useRef} from "react";
+
+type MarkerType = {
+  lat: number;
+  lng: number;
+};
 
 const Footer = () => {
-  const YOUR_LATITUDE = -6.2088;
-  const YOUR_LONGITUDE = 106.8456;
-  const YOUR_ZOOM_LEVEL = 10;
+  const [markers] = useState<MarkerType[]>([{lat: -5.385181300240061, lng: 105.2740416303906}]);
+  const [infoWindowOpen, setInfoWindowOpen] = useState(false);
+  const YOUR_ZOOM_LEVEL = 15;
+  const mapRef = useRef<google.maps.Map | null>(null);
+
+  const handleMapClick = (event: google.maps.MapMouseEvent) => {
+    if (event.latLng) {
+      const newMarker: MarkerType = {
+        lat: event.latLng.lat(),
+        lng: event.latLng.lng(),
+      };
+    }
+  };
+
+  const handleMarkerClick = () => {
+    setInfoWindowOpen(!infoWindowOpen);
+  };
+
+  const handleReturnToMarker = () => {
+    if (mapRef.current && markers.length > 0) {
+      const center = new google.maps.LatLng(markers[0].lat, markers[0].lng);
+      mapRef.current.panTo(center);
+      mapRef.current.setZoom(YOUR_ZOOM_LEVEL);
+      setInfoWindowOpen(true);
+    }
+  };
 
   return (
     <>
@@ -125,9 +154,37 @@ const Footer = () => {
           <LoadScript googleMapsApiKey="AIzaSyBkWQ9aZByT37smbe_M_-QLXoNZ3KAlnZI">
             <GoogleMap
               mapContainerStyle={{ width: '100%', height: '300px', borderRadius: '8px' }}
-              center={{ lat: YOUR_LATITUDE, lng: YOUR_LONGITUDE }}
+              center={markers.length > 0 ? markers[markers.length - 1] : { lat: -5.385181300240061, lng: 105.2740416303906 }}
               zoom={YOUR_ZOOM_LEVEL}
-            />
+              onClick={handleMapClick}
+              onLoad={(map) => {
+                if (map) {
+                  mapRef.current = map as google.maps.Map;
+                }
+              }}
+            >
+             {markers.map((marker, index) => (
+                <Marker key={index} position={marker} onClick={handleMarkerClick}>
+                  {infoWindowOpen && (
+                    <InfoWindow onCloseClick={() => setInfoWindowOpen(false)}>
+                      <div className="max-w-xs">
+                        <h3 className="text-lg font-semibold mb-1">Inisiatif Lampung Sehat</h3>
+                        <p className="mb-1">Jl. P. Sanama No.47</p>
+                        <p className="mb-1">Way Halim Permai</p>
+                        <p className="mb-1">Kec. Sukarame</p>
+                        <p className="mb-1">Kota Bandar Lampung, Lampung 35122, Indonesia</p>
+                        <p>
+                          <a href="https://maps.app.goo.gl/XhZXmNsgWTENMePy6" target="_blank" rel="noopener noreferrer" className="text-blue-600">View on Google Maps</a>
+                        </p>
+                      </div>
+                    </InfoWindow>
+                  )}
+                </Marker>
+              ))}
+              <button className="absolute bottom-5 right-14 z-10 bg-white border border-gray-300 py-2 px-4 rounded-lg shadow-md text-gray-700" onClick={handleReturnToMarker}>
+                Return to Marker
+              </button>
+            </GoogleMap>
           </LoadScript>
         </div>
 

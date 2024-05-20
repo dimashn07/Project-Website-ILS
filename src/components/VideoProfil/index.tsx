@@ -6,7 +6,7 @@ import SectionTitle from "../Common/SectionTitle";
 
 import ModalVideo from "react-modal-video";
 
-const Video = () => {
+const VideoProfil = () => {
   const [isOpen, setOpen] = useState(false);
 
   return (
@@ -71,4 +71,4 @@ const Video = () => {
   );
 };
 
-export default Video;
+export default VideoProfil;

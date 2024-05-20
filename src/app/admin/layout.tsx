@@ -1,11 +1,12 @@
-"use client";
+"use client"; 
 
-import Footer from "@/components/Footer";
-import Header from "@/components/Header";
+// import Footer from "@/components/Footer";
+import AdminHeader from "@/components/Admin/Header";
 import ScrollToTop from "@/components/ScrollToTop";
 import { Inter } from "next/font/google";
-import "node_modules/react-modal-video/css/modal-video.css";
-import "../styles/index.css";
+// import "node_modules/react-modal-video/css/modal-video.css";
+import "../../styles/index.css";
+import SessionProvider from "../sessionProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -23,16 +24,14 @@ export default function RootLayout({
       <head />
 
       <body className={`bg-[#FCFCFC] dark:bg-black ${inter.className}`}>
-        <Providers>
-          <Header />
+        <SessionProvider>
+          <AdminHeader />
           {children}
-          <Footer />
           <ScrollToTop />
-        </Providers>
+        </SessionProvider>
       </body>
     </html>
   );
 }
 
-import { Providers } from "./providers";import SessionProvider from "./sessionProvider";
 
