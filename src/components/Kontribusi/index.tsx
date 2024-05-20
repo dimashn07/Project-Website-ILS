@@ -2,7 +2,7 @@ import React from 'react';
 import CardSlider from './cardSlider';
 import './index.css';
 
-const Features = () => {
+const Kontribusi = () => {
   return (
     <div className = "kontribusi">
     <main className="bg-[#efefef] dark:bg-bg-color-dark py-16 md:py-20 lg:py-28" style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', textAlign: 'center' }}>
@@ -21,4 +21,4 @@ const Features = () => {
   );
 };
 
-export default Features;
+export default Kontribusi;

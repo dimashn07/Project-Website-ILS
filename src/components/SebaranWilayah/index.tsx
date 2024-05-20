@@ -1,7 +1,7 @@
 import React from 'react';
 import Map from './Map';
 
-const About: React.FC = () => {
+const SebaranWilayah: React.FC = () => {
   const handleProvinceClick = (e: React.MouseEvent<SVGElement>): void => {
     const province = (e.target as Element).parentNode as SVGElement;
     const allProvinces = document.querySelectorAll<SVGElement>("#lampung-map g");
@@ -92,4 +92,4 @@ const About: React.FC = () => {
 
 };
 
-export default About;
+export default SebaranWilayah;

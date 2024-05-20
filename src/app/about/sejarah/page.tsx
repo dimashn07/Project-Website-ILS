@@ -1,34 +1,48 @@
-import React from 'react';
+'use client'
+// import React from 'react';
 import Breadcrumb from "@/components/Common/Breadcrumb";
+import { useEffect, useState } from 'react';
+import { collection, doc, getDocs, onSnapshot, query } from "firebase/firestore";
+import { db } from "@/app/firebaseConfig";
 
-const Sejarah = () => {
-  return (
-    <>
-      <Breadcrumb
-         pageName="Sejarah"
-        description="Sejarah Lembaga Inisiatif lampung Sehat"
-      />
-      <section className="pb-[50px] pt-[10px]">
-        <div className="container">
-          <div className="mx-4 max-w-1.5x1.5">
-            <p className="text-lg mb-8">
-    Inisiatif Lampung Sehat (ILS) merupakan Non-Government Organization (NGO) nirlaba yang memiliki dasar kepentingan 
-    sosial dan juga lingkungan, bergerak dalam bidang sosial, kesehatan, dan pendidikan masyarakat dengan mengupayakan 
-    terwujudnya masyarakat sehat dan Sejahtera
-</p>
+const SejarahPage = () => {
+    const [sejarah, setSejarah] = useState<{ [key: string]: any }[]>([]);
 
-<div className="text-lg mb-8">
-    Disahkan pada tanggal 2 September 2020 oleh Menteri Hukum Dan Hak Asasi Manusia Republik Indonesia nomor: AHU-0007058.AH.01.07.TAHUN 
-    2020 Inisiatif Lampung Sehat (ILS) sejak tahun 2021 secara konsisten telah berkontribusi dalam penanggulangan penyakit menular
-    khususnya tuberkulosis (TB), pada perjalanannya telah banyak memberi manfaat terhadap masyarakat, dengan mengusung tagline “Respect 
-    and Care” ILS mengajak seluruh elemen untuk lebih peduli terhadap masyarakat yang terdampak penyakit menular
-</div>
+    useEffect(() => {
+      const q = query(collection(db, 'sejarah'))
+      const unsubscribe = onSnapshot(q, (querySnapshot) => {
+        let sejarahArr = []
+    
+        querySnapshot.forEach((doc) => {
+          sejarahArr.push({...doc.data(), id: doc.id})
+        });
+        setSejarah(sejarahArr);
+      })
+    
+      return () => {
+        unsubscribe();
+      };
+    }, []);
 
+    return (
+      <>
+        <Breadcrumb
+          pageName="Sejarah"
+          description="Sejarah Lembaga Inisiatif Lampung Sehat"
+        />
+        <section className="pb-[50px] pt-[10px]">
+          <div className="container">
+            <div className="mx-4 max-w-1.5x1.5">
+              {sejarah.map((item) => (
+                <div key={item.id} className="text-lg mb-8">
+                  {item.deskripsi}
+                </div>
+              ))}
+            </div>
           </div>
-        </div>
-      </section>
-    </>
-  );
+        </section> 
+      </>
+    );
 };
 
-export default Sejarah;
+export default SejarahPage;

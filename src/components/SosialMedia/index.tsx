@@ -1,7 +1,7 @@
 import React from 'react';
 import SosialMediaEmbed from './SosialMediaEmbed';
 
-const MediaSosial = () => {
+const SosialMedia = () => {
   return (
     <div className="flex justify-center items-center h-screen">
       <div>
@@ -11,4 +11,4 @@ const MediaSosial = () => {
   );
 };
 
-export default MediaSosial;
+export default SosialMedia;

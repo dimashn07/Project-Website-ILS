@@ -1,34 +1,33 @@
 import { Menu } from "@/types/menu";
 
-const menuData: Menu[] = [
+const MenuData: Menu[] = [
   {
     id: 1,
     title: "Beranda",
-    path: "/",
+    path: "/admin",
     newTab: false,
   },
   {
     id: 2,
     title: "Tentang Kami",
-    //path: "/about"
     newTab: false,
     submenu: [
       {
         id: 21,
         title: "Sejarah",
-        path: "/about/sejarah",
+        path: "/admin/tentang/sejarah",
         newTab: false,
       },
       {
         id: 22,
         title: "Visi & Misi",
-        path: "/about/visimisi",
+        path: "/admin/tentang/visi-misi",
         newTab: false,
       },
       {
         id: 23,
         title: "Struktur Organisasi",
-        path: "/about/strukturorganisasi",
+        path: "/admin/tentang/struktur-organisasi",
         newTab: false,
       },
     ],
@@ -41,13 +40,13 @@ const menuData: Menu[] = [
       {
         id: 31,
         title: "Sebaran Wilayah",
-        path: "",
+        path: "/admin/pelaksana/sebaran-wilayah",
         newTab: false,
       },
       {
         id: 32,
         title: "Kerja Sama",
-        path: "",
+        path: "/admin/pelaksana/kerja-sama",
         newTab: false,
       },
     ],
@@ -60,23 +59,23 @@ const menuData: Menu[] = [
       {
         id: 41,
         title: "Eliminasi TB",
-        path: "/blog",
+        path: "/admin/berita/eliminasi-tb",
         newTab: false,
       },
       {
         id: 42,
         title: "UMKM",
-        path: "/blog",
+        path: "/admin/berita/umkm",
         newTab: false,
       },
       {
         id: 43,
         title: "Layanan Kesehatan Publik",
-        path: "/blog",
+        path: "/admin/berita/layanan-kesehatan-publik",
         newTab: false,
       },
     ],
   },
   
 ];
-export default menuData;
+export default MenuData;

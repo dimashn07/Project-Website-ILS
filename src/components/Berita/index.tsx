@@ -2,7 +2,7 @@ import SectionTitle from "../Common/SectionTitle";
 import SingleBlog from "./SingleBlog";
 import blogData from "./blogData";
 
-const Blog = () => {
+const Berita = () => {
   return (
     <section
       id="blog"
@@ -27,4 +27,4 @@ const Blog = () => {
   );
 };
 
-export default Blog;
+export default Berita;
