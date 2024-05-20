@@ -1,12 +1,11 @@
 'use client'
 import SebaranWilayah from "@/components/SebaranWilayah";
 import Berita from "@/components/Berita";
-// import Brands from "@/components/Brands";
-// import ScrollUp from "@/components/Common/ScrollUp";
 import SosialMedia from "@/components/SosialMedia";
 import Kontribusi from "@/components/Kontribusi";
 import Program from "@/components/Program";
 import VideoProfil from "@/components/VideoProfil";
+import AdminRootLayout from "./layout";
 import { useSession } from "next-auth/react";
 import { redirect } from "next/navigation";
 // import { Metadata } from "next";
@@ -28,12 +27,14 @@ export default function Home() {
 
   return (
     <>
-      <Program />
-      <Kontribusi />
-      <SebaranWilayah />
-      <VideoProfil />
-      <Berita />
-      <SosialMedia />
+      <AdminRootLayout>
+        <Program />
+        <Kontribusi />
+        <SebaranWilayah />
+        <VideoProfil />
+        <Berita />
+        <SosialMedia />
+      </AdminRootLayout>
     </>
   );
 }

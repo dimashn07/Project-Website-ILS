@@ -13,7 +13,7 @@ const VisiMisiPage = () => {
     useEffect(() => {
       const q = query(collection(db, 'visi'))
       const unsubscribe = onSnapshot(q, (querySnapshot) => {
-        let visiArr = []
+        let visiArr : { id: string }[] = [];
     
         querySnapshot.forEach((doc) => {
           visiArr.push({...doc.data(), id: doc.id})
@@ -23,7 +23,7 @@ const VisiMisiPage = () => {
 
       const qu = query(collection(db, 'misi'))
       const unsub = onSnapshot(qu, (querySnapshot) => {
-        let misiArr = []
+        let misiArr : { id: string }[] = [];
     
         querySnapshot.forEach((doc) => {
           misiArr.push({...doc.data(), id: doc.id})
