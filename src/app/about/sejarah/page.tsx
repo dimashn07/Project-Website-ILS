@@ -2,14 +2,14 @@
 // import React from 'react';
 import Breadcrumb from "@/components/Common/Breadcrumb";
 import { useEffect, useState } from 'react';
-import { collection, doc, getDocs, onSnapshot, query } from "firebase/firestore";
+import { collection, doc, getDocs, onSnapshot, orderBy, query } from "firebase/firestore";
 import { db } from "@/app/firebaseConfig";
 
 const SejarahPage = () => {
     const [sejarah, setSejarah] = useState<{ [key: string]: any }[]>([]);
 
     useEffect(() => {
-      const q = query(collection(db, 'sejarah'))
+      const q = query(collection(db, 'sejarah'), orderBy('paragraf', 'asc'));
       const unsubscribe = onSnapshot(q, (querySnapshot) => {
         let sejarahArr: { id: string }[] = []; // Define the type annotation correctly
     
