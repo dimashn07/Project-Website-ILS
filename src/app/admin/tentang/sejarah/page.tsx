@@ -1,62 +1,107 @@
 'use client'
-// import React from 'react';
 import Breadcrumb from "@/components/Common/Breadcrumb";
-import { useEffect, useState } from 'react';
-import { collection, doc, getDocs, onSnapshot, query } from "firebase/firestore";
-import { db } from "@/app/firebaseConfig";
+import React, { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash, faPenToSquare } from '@fortawesome/free-solid-svg-icons';
 import { useRouter } from "next/navigation";
+import { doc, updateDoc } from 'firebase/firestore';
+import { db } from "@/app/firebaseConfig";
+import { getSejarah, addSejarah, deleteSejarah } from "../../controller/sejarah";
 
 
 const SejarahPage = () => {
     const [sejarah, setSejarah] = useState<{ [key: string]: any }[]>([]);
+    const [deskripsi, setDeskripsi] = useState('');
+    const [selectedItem, setSelectedItem] = useState(null);
+    const [isUpdateMode, setIsUpdateMode] = useState(false);
+
     const router = useRouter();
 
     const handleTambahClick = () => {
       router.push('sejarah/tambah');
     };
-    const handleUbahClick = () => {
-      router.push('sejarah/ubah');
-    };
-    const handleHapusClick = () => {
-      //sss
+    //   e.preventDefault();
+    //   if (isUpdateMode){
+    //     if(selectedItem){
+    //       try{
+    //         const updatedSejarah = {
+    //           deskripsi,
+    //         };
+    //         const sejarahRef = doc(db, 'sejarah', selectedItem.id);
+    //         await updateDoc(sejarahRef, updatedSejarah);
+  
+    //         setDeskripsi('');
+    //         setSelectedItem(null);
+    //         setIsUpdateMode(false);
+  
+    //         alert('Data berhasil diubah')
+    //       }catch(error){
+    //         console.error('ERROR', error);
+    //       }
+    //     }
+    //   }else{
+    //     const added = await addSejarah(deskripsi);
+    //     if(added){
+    //       setDeskripsi('');
+          
+    //       alert('Data berhasil ditambahkan')
+    //     }
+    //   }
+    // };
+    // useEffect(() => {
+    //   const q = query(collection(db, 'sejarah'))
+    //   const unsubscribe = onSnapshot(q, (querySnapshot) => {
+    //     let sejarahArr: { id: string }[] = [];
+    
+    //     querySnapshot.forEach(async (doc) => {
+    //       const sejarahData = doc.data();
+    //       let editedByName = ''; // Nama pengguna yang mengedit
+    //       if (sejarahData.editedBy) {
+    //         // Jika editedBy ada, coba ambil detail pengguna dari Firestore
+    //         try {
+    //           const userData = await doc.data().editedBy.get(); // Ambil detail pengguna
+    //           editedByName = userData.data().name; // Ambil nama pengguna
+    //         } catch (error) {
+    //           console.error("Error fetching user data:", error);
+    //         }
+    //       }
+          
+    //       const sejarahItem = {
+    //         ...sejarahData,
+    //         id: doc.id,
+    //         editedByName: editedByName
+    //       };
+ 
+    //       sejarahArr.push(sejarahItem);
+    //     });
+    //     setSejarah(sejarahArr);
+    //   })
+    
+    //   return () => {
+    //     unsubscribe();
+    //   };
+    // }, []);
+
+    useEffect(() => {
+      async function getData() {
+        const sejarah = await getSejarah();
+        setSejarah(sejarah);
+      }
+      getData();
+    }, []);
+
+    const handleUbahClick = (sejarah) => {
+      router.push(`sejarah/ubah?id=${sejarah.id}`);
     };
 
     useEffect(() => {
-      const q = query(collection(db, 'sejarah'))
-      const unsubscribe = onSnapshot(q, (querySnapshot) => {
-        let sejarahArr: { id: string }[] = [];
-    
-        querySnapshot.forEach(async (doc) => {
-          const sejarahData = doc.data();
-          let editedByName = ''; // Nama pengguna yang mengedit
-          if (sejarahData.editedBy) {
-            // Jika editedBy ada, coba ambil detail pengguna dari Firestore
-            try {
-              const userData = await doc.data().editedBy.get(); // Ambil detail pengguna
-              editedByName = userData.data().name; // Ambil nama pengguna
-            } catch (error) {
-              console.error("Error fetching user data:", error);
-            }
-          }
-          
-          const sejarahItem = {
-            ...sejarahData,
-            id: doc.id,
-            editedByName: editedByName
-          };
- 
-          sejarahArr.push(sejarahItem);
-        });
-        setSejarah(sejarahArr);
-      })
-    
-      return () => {
-        unsubscribe();
-      };
+      async function getData() {
+        const sejarah = await getSejarah();
+        setSejarah(sejarah);
+      }
+      getData();
     }, []);
-
+    
     return (
       <>
         <Breadcrumb
@@ -88,22 +133,37 @@ const SejarahPage = () => {
               </tr>
             </thead>
             <tbody>
-              {sejarah.map((item) => (
+              {sejarah.map((item, index) => (
                 <tr key={item.id} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                   <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                    {item.id}
+                    {index+1}
                   </td>
                   <td className="px-6 py-4 text-justify">
                     {item.deskripsi}
                   </td>
                   <td className="px-6 py-4">
-                    {item.editedByName}
+                    {item.timestamp?.toDate().toLocaleDateString()}
                   </td>
                   <td className="px-6 py-4 justify-center">
-                    <span onClick={handleUbahClick} className="mr-2">
+                    <button 
+                      type="button" className="mr-2"
+                      onClick={() => handleUbahClick(item)} 
+                    >
                       <FontAwesomeIcon icon={faPenToSquare} size="xl" className="text-black dark:text-white" />
-                    </span>
-                    <button type="submit" onClick={handleHapusClick} className="ml-2">
+                    </button>
+                    <button 
+                      type="button" className="ml-2"
+                      onClick={async () => {
+                        const isConfirmed = window.confirm('Apakah Anda yakin ingin menghapus data?');
+                        if (isConfirmed) {
+                          const deletedSejarah = await deleteSejarah(item.id);
+                          if (deletedSejarah) {
+                            const updatedSejarah = sejarah.filter((t) => t.id !== deletedSejarah);
+                            setSejarah(updatedSejarah);
+                          }
+                        }
+                      }}                        
+                    >
                       <FontAwesomeIcon icon={faTrash} size="xl" className="text-black dark:text-white"/>
                     </button>
                   </td>
@@ -112,24 +172,6 @@ const SejarahPage = () => {
             </tbody>
           </table>
         </div>
-
-      
-        {/* <section className="pb-[50px] pt-[10px]">
-          <div className="container">
-            <table>
-              <th>Paragraf</th>
-              <th>Deskripsi</th>
-              <th>Aksi</th>
-            </table>
-            <div className="mx-4 max-w-1.5x1.5">
-              {sejarah.map((sejarah) => (
-                <div key={sejarah.id} className="text-lg text-justify mb-8">
-                  {sejarah.deskripsi}
-                </div>
-              ))}
-            </div>
-          </div>
-        </section> */}
       </>
     );
 };
