@@ -1,4 +1,4 @@
-import { collection, doc, getDocs, addDoc, deleteDoc, updateDoc, serverTimestamp, onSnapshot, query, orderBy, runTransaction, limit} from "firebase/firestore";
+import { collection, doc, getDocs, addDoc, deleteDoc, updateDoc, serverTimestamp, query, orderBy, runTransaction, limit} from "firebase/firestore";
 import { db } from "@/app/firebaseConfig";
 
 export async function addSejarah(deskripsi) {
