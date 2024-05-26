@@ -1,5 +1,5 @@
 import React from 'react';
-import CreateBlogPostForm from "@/components/Admin/addblog";
+import CreateBlogPostForm from "@/components/Admin/AddBlog/addblog";
 
 const TambahBeritaPage = () => {
   return (
