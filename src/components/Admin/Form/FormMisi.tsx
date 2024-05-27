@@ -1,7 +1,7 @@
 'use client'
 import { useRouter } from "next/navigation";
 
-export function FormMisi({ handleSimpanClick }) {
+export function FormMisi({ handleSimpanClick, deskripsi, setDeskripsi }) {
     const router = useRouter();
 
     const handleKembaliClick = () => {
@@ -12,7 +12,7 @@ export function FormMisi({ handleSimpanClick }) {
         <form className="flex max-w-7xl flex-col" onSubmit={handleSimpanClick}>
             <div className="relative z-0 w-full mb-5 group">
                 <textarea 
-                    id="deskripsi" name="deskripsi" placeholder="Masukkan paragraf"
+                    id="deskripsi" name="deskripsi" value={deskripsi} onChange={(e) => setDeskripsi(e.target.value)} placeholder="Masukkan paragraf"
                     className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" >
                 </textarea>
             </div> 

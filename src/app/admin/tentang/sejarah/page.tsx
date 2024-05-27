@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash, faPenToSquare } from '@fortawesome/free-solid-svg-icons';
 import { useRouter } from "next/navigation";
-import { getSejarah, addSejarah, deleteSejarah } from "../../controller/sejarah";
+import { getSejarah, deleteSejarah } from "../../controller/sejarah";
 
 
 const SejarahPage = () => {
@@ -15,14 +15,6 @@ const SejarahPage = () => {
     const handleTambahClick = () => {
       router.push('sejarah/tambah');
     };
-
-    useEffect(() => {
-      async function getData() {
-        const sejarah = await getSejarah();
-        setSejarah(sejarah);
-      }
-      getData();
-    }, []);
 
     const handleUbahClick = (sejarah) => {
       router.push(`sejarah/ubah?id=${sejarah.id}`);
