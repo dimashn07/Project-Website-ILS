@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { FormSejarah } from '@/components/Admin/Form/FormSejarah';
-import { doc, getDoc, updateDoc } from 'firebase/firestore';
+import { doc, getDoc, serverTimestamp, updateDoc } from 'firebase/firestore';
 import { db } from "@/app/firebaseConfig";
 import Breadcrumb from '@/components/Common/Breadcrumb';
 
@@ -11,24 +11,25 @@ const UbahSejarahPage = () => {
   const searchParams = useSearchParams();
   const [deskripsi, setDeskripsi] = useState('');
   const [selectedItem, setSelectedItem] = useState<{ [key: string]: any } | null>(null);
-  useEffect(() => {
-    const sejarahId = searchParams?.get('id');
-    if (sejarahId) {
-      fetchSejarahData(sejarahId);
-    }
-  }, [searchParams]);
-
-  const fetchSejarahData = async (id: string) => {
+  
+  const fetchSejarahData = async(id: string) => {
     const docRef = doc(db, 'sejarah', id);
     const docSnap = await getDoc(docRef);
 
-    if (docSnap.exists()) {
+    if(docSnap.exists()){
       setSelectedItem({ id: docSnap.id, ...docSnap.data() });
       setDeskripsi(docSnap.data().deskripsi);
-    } else {
-      console.error('Document not found');
+    }else{
+      console.error('Data tidak ditemukan');
     }
   };
+
+  useEffect(() => {
+    const sejarahId = searchParams?.get('id');
+    if(sejarahId){
+      fetchSejarahData(sejarahId);
+    }
+  }, [searchParams]);
 
   const handleSimpanClick = async (e) => {
     e.preventDefault();
@@ -36,6 +37,7 @@ const UbahSejarahPage = () => {
       try {
         const updatedSejarah = {
           deskripsi,
+          timestamp: serverTimestamp(),
         };
         const sejarahRef = doc(db, 'sejarah', selectedItem.id);
         await updateDoc(sejarahRef, updatedSejarah);
