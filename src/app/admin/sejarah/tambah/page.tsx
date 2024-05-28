@@ -1,28 +1,32 @@
 'use client'
 import React, { useState } from 'react';
 import { FormSejarah } from '@/components/Admin/Form/FormSejarah';
-import { addSejarah } from "../../../controller/sejarah";
+import { addSejarah } from "../../controller/sejarah";
 import { useRouter } from 'next/navigation';
 import Breadcrumb from "@/components/Common/Breadcrumb";
+import { useSession } from 'next-auth/react';
+import AdminLayout from '../../layout';
 
 const TambahSejarahPage = () => {
   const [deskripsi, setDeskripsi] = useState('');
+  const { data: session } = useSession();
 
   const router = useRouter();
 
   const handleSimpanClick = async(e) => {
     e.preventDefault();
-      const added = await addSejarah(deskripsi);
+      const added = await addSejarah(deskripsi, session);
       if(added){
         setDeskripsi('');
         
         alert('Data berhasil ditambahkan')
-        router.push('./');
+        router.push('../');
       }
   };
 
   return (
     <>
+    <AdminLayout>
       <Breadcrumb
         pageName="Sejarah"
         description="Sejarah Lembaga Inisiatif Lampung Sehat"
@@ -34,6 +38,7 @@ const TambahSejarahPage = () => {
           <FormSejarah handleSimpanClick={handleSimpanClick} deskripsi={deskripsi} setDeskripsi={setDeskripsi} />
         </div>
       </div>
+    </AdminLayout>
     </>
   );
 };

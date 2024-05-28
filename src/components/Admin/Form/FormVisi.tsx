@@ -5,7 +5,7 @@ export function FormVisi({ handleSimpanClick, deskripsi, setDeskripsi }) {
     const router = useRouter();
 
     const handleKembaliClick = () => {
-        router.push('./');
+        router.push('../');
     };
 
     return (

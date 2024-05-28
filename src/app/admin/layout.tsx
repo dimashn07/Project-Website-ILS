@@ -4,15 +4,11 @@ import AdminHeader from "@/components/Admin/Header";
 import ScrollToTop from "@/components/ScrollToTop";
 import { Inter } from "next/font/google";
 import "../../styles/index.css";
-import SessionProvider from "../sessionProvider";
+import { SessionProvider } from 'next-auth/react';
 
 const inter = Inter({ subsets: ["latin"] });
 
-const AdminRootLayout = ({
-  children,
-}: {
-  children: React.ReactNode;
-}) => {
+const AdminLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <html suppressHydrationWarning lang="en">
       <head />
@@ -28,4 +24,4 @@ const AdminRootLayout = ({
   );
 };
 
-export default AdminRootLayout;
+export default AdminLayout;

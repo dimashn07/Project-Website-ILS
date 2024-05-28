@@ -1,40 +1,39 @@
 'use client'
-import SebaranWilayah from "@/components/SebaranWilayah";
-import Berita from "@/components/Berita";
-import SosialMedia from "@/components/SosialMedia";
-import Kontribusi from "@/components/Kontribusi";
-import Program from "@/components/Program";
-import VideoProfil from "@/components/VideoProfil";
-import AdminRootLayout from "./layout";
+import AdminLayout from "./layout";
 import { useSession } from "next-auth/react";
 import { redirect } from "next/navigation";
-// import { Metadata } from "next";
-
-// export const metadata: Metadata = {
-//   title: "Inisiatif Lampung Sehat - Respect and Care",
-//   description: "This is Home for Inisiatif Lampung Sehat",
-//   // other metadata
-// };
+import Breadcrumb from "@/components/Common/Breadcrumb";
+import SejarahPage from "./sejarah/page";
+import VisiMisiPage from "./visi-misi/page";
 
 export default function Home() {
 
-  const session = useSession({
+  const { data: session, status } = useSession({
     required: true,
     onUnauthenticated() {
-      redirect('/') 
+      redirect('/');
     },
-  })
+  });
+
+  // if (status === 'loading') {
+  //   // Loading state
+  //   return <div>Loading...</div>;
+  // }
+
+  if (!session?.user) {
+    return <div>Redirecting...</div>;
+  }
 
   return (
     <>
-      <AdminRootLayout>
-        <Program />
-        <Kontribusi />
-        <SebaranWilayah />
-        <VideoProfil />
-        <Berita />
-        <SosialMedia />
-      </AdminRootLayout>
+      <AdminLayout>
+        <Breadcrumb
+          pageName="Beranda"
+          description="Lembaga Inisiatif Lampung Sehat"
+        />
+        <SejarahPage />
+        <VisiMisiPage />
+      </AdminLayout>
     </>
   );
 }

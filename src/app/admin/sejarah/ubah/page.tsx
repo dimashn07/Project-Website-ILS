@@ -5,12 +5,15 @@ import { FormSejarah } from '@/components/Admin/Form/FormSejarah';
 import { doc, getDoc, serverTimestamp, updateDoc } from 'firebase/firestore';
 import { db } from "@/app/firebaseConfig";
 import Breadcrumb from '@/components/Common/Breadcrumb';
+import { useSession } from 'next-auth/react';
+import AdminLayout from '../../layout';
 
 const UbahSejarahPage = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [deskripsi, setDeskripsi] = useState('');
   const [selectedItem, setSelectedItem] = useState<{ [key: string]: any } | null>(null);
+  const { data: session } = useSession();
   
   const fetchSejarahData = async(id: string) => {
     const docRef = doc(db, 'sejarah', id);
@@ -33,10 +36,11 @@ const UbahSejarahPage = () => {
 
   const handleSimpanClick = async (e) => {
     e.preventDefault();
-    if (selectedItem) {
+    if (selectedItem && session && session.user) {
       try {
         const updatedSejarah = {
           deskripsi,
+          author: session.user.email,
           timestamp: serverTimestamp(),
         };
         const sejarahRef = doc(db, 'sejarah', selectedItem.id);
@@ -46,7 +50,7 @@ const UbahSejarahPage = () => {
         setSelectedItem(null);
 
         alert('Data berhasil diubah');
-        router.push('./');
+        router.push('../');
       } catch (error) {
         console.error('ERROR', error);
       }
@@ -55,6 +59,7 @@ const UbahSejarahPage = () => {
 
   return (
     <>
+    <AdminLayout>
       <Breadcrumb
         pageName="Sejarah"
         description="Sejarah Lembaga Inisiatif Lampung Sehat"
@@ -66,6 +71,7 @@ const UbahSejarahPage = () => {
           <FormSejarah handleSimpanClick={handleSimpanClick} deskripsi={deskripsi} setDeskripsi={setDeskripsi} />
         </div>
       </div>
+    </AdminLayout>
     </>
   );
 };

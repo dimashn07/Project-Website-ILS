@@ -6,9 +6,12 @@ import { FormMisi } from "@/components/Admin/Form/FormMisi";
 import { useRouter } from "next/navigation";
 import { addVisi } from "@/app/admin/controller/visi";
 import { addMisi } from "@/app/admin/controller/misi";
+import AdminLayout from "../../layout";
+import { useSession } from "next-auth/react";
 
 const TambahVisiMisiPage = () => {
     const [deskripsi, setDeskripsi] = useState('');
+    const { data: session } = useSession();
 
     const router = useRouter();
 
@@ -25,17 +28,18 @@ const TambahVisiMisiPage = () => {
   
     const handleSimpanMisiClick = async(e) => {
       e.preventDefault();
-        const added = await addMisi(deskripsi);
+        const added = await addMisi(deskripsi, session);
         if(added){
           setDeskripsi('');
           
           alert('Data berhasil ditambahkan')
-          router.push('./');
+          router.push('../');
         }
     };
 
     return (
         <>
+        <AdminLayout>
             <Breadcrumb
                 pageName="Visi Misi"
                 description="Visi dan Misi Lembaga Inisiatif Lampung Sehat"
@@ -51,6 +55,7 @@ const TambahVisiMisiPage = () => {
                     <FormMisi handleSimpanClick={handleSimpanMisiClick} deskripsi={deskripsi} setDeskripsi={setDeskripsi}/>
                 </div>
             </div>
+        </AdminLayout>
         </>
     )
 }

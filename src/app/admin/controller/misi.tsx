@@ -1,7 +1,7 @@
 import { db } from "@/app/firebaseConfig";
 import { addDoc, collection, deleteDoc, doc, getDocs, limit, orderBy, query, runTransaction, serverTimestamp, updateDoc } from "firebase/firestore";
 
-export async function addMisi(deskripsi){
+export async function addMisi(deskripsi, session){
     try{
         await runTransaction(db, async(transaction) => {
             const q = query(collection(db, 'misi'), orderBy('no', 'desc'), limit(1));
@@ -17,7 +17,7 @@ export async function addMisi(deskripsi){
             const docRef = await addDoc(collection(db, 'misi'), {
                 no: newNumber,
                 deskripsi: deskripsi,
-                // author: ,
+                author: session.user.email,
                 timestamp: serverTimestamp(),
             });
             console.log('Misi berhasil ditambahkan dengan ID: ', docRef.id);
@@ -29,7 +29,7 @@ export async function addMisi(deskripsi){
     }
 }
 
-export async function getMisi(){
+export async function getMisi(session){
     const misiCollection = collection(db, 'misi');
     const querySnapshot = await getDocs(query(misiCollection, orderBy('no', 'asc')));
     let misiArr: {id: string}[] = [];
@@ -40,7 +40,7 @@ export async function getMisi(){
     return misiArr;
 }
 
-export async function editMisi(misiId, updatedData){
+export async function editMisi(misiId, updatedData, session){
     try{
         const misiRef = doc(db, 'misi', misiId);
         await updateDoc(misiRef, updatedData);
@@ -52,7 +52,7 @@ export async function editMisi(misiId, updatedData){
     }
 }
 
-export async function deleteMisi(misiId){
+export async function deleteMisi(misiId, session){
     try{
         console.log('Hapus misi dengan ID: ', misiId);
         await deleteDoc(doc (db, 'misi', misiId));
