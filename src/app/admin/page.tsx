@@ -5,6 +5,7 @@ import { redirect } from "next/navigation";
 import Breadcrumb from "@/components/Common/Breadcrumb";
 import SejarahPage from "./sejarah/page";
 import VisiMisiPage from "./visi-misi/page";
+import KontribusiPage from "./kontribusi/page";
 
 export default function Home() {
 
@@ -31,6 +32,7 @@ export default function Home() {
           pageName="Beranda"
           description="Lembaga Inisiatif Lampung Sehat"
         />
+        <KontribusiPage />
         <SejarahPage />
         <VisiMisiPage />
       </AdminLayout>
