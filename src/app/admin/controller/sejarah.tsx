@@ -1,14 +1,14 @@
 import { collection, doc, getDocs, addDoc, deleteDoc, updateDoc, serverTimestamp, query, orderBy, runTransaction, limit} from "firebase/firestore";
 import { db } from "@/app/firebaseConfig";
 
-export async function addSejarah(deskripsi) {
+export async function addSejarah(deskripsi, session){
     try {
-      await runTransaction(db, async (transaction) => {
+      await runTransaction(db, async(transaction) => {
         const q = query(collection(db, 'sejarah'), orderBy('paragraf', 'desc'), limit(1));
         const querySnapshot = await getDocs(q);
         let lastParagraf = 0;
   
-        if (!querySnapshot.empty) {
+        if(!querySnapshot.empty){
           const lastDoc = querySnapshot.docs[0];
           lastParagraf = lastDoc.data().paragraf || 0;
         }
@@ -17,23 +17,22 @@ export async function addSejarah(deskripsi) {
         const docRef = await addDoc(collection(db, 'sejarah'), {
           paragraf: newParagraf,
           deskripsi: deskripsi,
-          // author: 'author_name', 
+          author: session.user.email, 
           timestamp: serverTimestamp(),
         });
         console.log('Paragraf berhasil ditambahkan dengan ID: ', docRef.id);
       });
-  
       return true;
-    } catch (error) {
+    } catch(error){
       console.error('ERROR: ', error);
       return false;
     }
   }
 
-export async function getSejarah(){
+export async function getSejarah(session){
     const sejarahCollection = collection(db, 'sejarah');
     const querySnapshot = await getDocs(query(sejarahCollection, orderBy('paragraf', 'asc')));
-    let sejarahArr: { id: string }[] = [];
+    let sejarahArr: {id: string}[] = [];
     querySnapshot.forEach((doc) => {
         const sejarahData = doc.data();
         sejarahArr.push({id: doc.id, ...sejarahData});
@@ -41,20 +40,20 @@ export async function getSejarah(){
     return sejarahArr;
 } 
 
-export async function editSejarah(sejarahId, updatedData) {
+export async function editSejarah(sejarahId, updatedData, session){
   try {
       const sejarahRef = doc(db, 'sejarah', sejarahId);
       await updateDoc(sejarahRef, updatedData);
       console.log('Paragraf berhasil diubah dengan ID: ', sejarahId);
       return true;
-  } catch (error) {
+  } catch(error){
       console.error('ERROR: ', error);
       return false;
   }
 }
 
 
-export async function deleteSejarah(sejarahId) {
+export async function deleteSejarah(sejarahId, session){
     try{
         console.log('Hapus paragraf dengan ID: ', sejarahId);
         await deleteDoc(doc (db, 'sejarah', sejarahId));
@@ -65,4 +64,3 @@ export async function deleteSejarah(sejarahId) {
     }
     
 }
-
