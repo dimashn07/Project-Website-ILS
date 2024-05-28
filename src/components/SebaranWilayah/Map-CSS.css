@@ -1,0 +1,52 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background: #e7e7e5;
+  color: #fff;
+  font-family: Avenir, Calibri, sans-serif;
+}
+
+#lampung-map {
+   padding-top: 15px;
+   margin-left: -25px;
+}
+
+#lampung-map g {
+  -webkit-transition: .3s;
+  transition: .3s;
+  margin-left: -25px;
+}
+
+#lampung-map g:hover {
+  cursor: pointer;
+  margin-left: -25px;
+}
+
+.active, .active:hover {
+  fill: #854442 !important;
+  margin-left: -25px;
+}
+
+@media all and (max-width: 800px) {
+  #lampung-map {
+    margin-top: 25%;
+  }
+  
+}
+@media all and (max-width: 650px) {
+  #lampung-map {
+    margin-left: 20%;
+    margin-top: 2%;
+  }
+  
+}
+@media all and (max-width: 450px) {  
+  
+}
+
+.map-container {
+  width: 1000px;
+  height: 800px;
+}
