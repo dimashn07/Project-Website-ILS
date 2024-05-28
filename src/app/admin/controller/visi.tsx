@@ -1,11 +1,11 @@
 import { collection, doc, getDocs, addDoc, deleteDoc, updateDoc, serverTimestamp, query, orderBy, runTransaction, limit} from "firebase/firestore";
 import { db } from "@/app/firebaseConfig";
 
-export async function addVisi(deskripsi) {
+export async function addVisi(deskripsi, session) {
     try {
         const docRef = await addDoc(collection(db, 'visi'), {
           deskripsi: deskripsi,
-          // author: 'author_name', 
+          author: session.user.email, 
           timestamp: serverTimestamp(),
         });
         console.log('Visi berhasil ditambahkan dengan ID: ', docRef.id);
@@ -16,7 +16,7 @@ export async function addVisi(deskripsi) {
     }
 }
 
-export async function getVisi(){
+export async function getVisi(session){
     const visiCollection = collection(db, 'visi');
     const querySnapshot = await getDocs(query(visiCollection));
     let visiArr: { id: string }[] = [];
@@ -27,7 +27,7 @@ export async function getVisi(){
     return visiArr;
 } 
 
-export async function editVisi(visiId, updatedData) {
+export async function editVisi(visiId, updatedData, session) {
   try {
       const visiRef = doc(db, 'visi', visiId);
       await updateDoc(visiRef, updatedData);
@@ -40,7 +40,7 @@ export async function editVisi(visiId, updatedData) {
 }
 
 
-export async function deleteVisi(visiId) {
+export async function deleteVisi(visiId, session) {
     try{
         console.log('Hapus visi dengan ID: ', visiId);
         await deleteDoc(doc (db, 'visi', visiId));

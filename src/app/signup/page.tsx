@@ -16,6 +16,10 @@ const SignUpPage = () => {
     createUserWithEmailAndPassword(auth, email, password);
   };
 
+  const handleLoginClick = () => {
+    router.push('/login');
+  };
+
   return (
     <>
       <section className="relative z-10 overflow-hidden pb-16 pt-36 md:pb-20 lg:pb-28 lg:pt-[180px]">
@@ -80,6 +84,12 @@ const SignUpPage = () => {
                     className="disabled:opacity-40 shadow-submit dark:shadow-submit-dark flex w-full items-center justify-center rounded-sm bg-primary px-9 py-4 text-base font-medium text-white duration-300 hover:bg-primary/90">
                     Daftar
                   </button>
+                </div>
+                <div className="text-center text-base font-medium text-body-color">
+                  Sudah Punya Akun? {" "}
+                  <span onClick={handleLoginClick} className="cursor-pointer text-primary hover:underline" >
+                    Masuk
+                  </span>
                 </div>
               </div>
             </div>

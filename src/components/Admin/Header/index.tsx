@@ -1,12 +1,14 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { redirect, usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import ThemeToggler from "./ThemeToggler";
 import MenuData from "./MenuData";
+import { useSession } from "next-auth/react";
 
 const AdminHeader = () => {
+
   // Navbar toggle
   const [navbarOpen, setNavbarOpen] = useState(false);
   const navbarToggleHandler = () => {
@@ -35,6 +37,8 @@ const AdminHeader = () => {
       setOpenIndex(index);
     }
   };
+
+  const { data: session, status } = useSession();
 
   const usePathName = usePathname();
 
@@ -105,18 +109,18 @@ const AdminHeader = () => {
                   }`}
                 >
                   <ul className="block lg:flex lg:space-x-12">
-                    {MenuData.map((menuItem, index) => (
+                    {MenuData.map((item, index) => (
                       <li key={index} className="group relative">
-                        {menuItem.path ? (
+                        {item.path ? (
                           <Link
-                            href={menuItem.path}
+                            href={item.path}
                             className={`flex py-2 text-base lg:mr-0 lg:inline-flex lg:px-0 lg:py-6 ${
-                              usePathName === menuItem.path
+                              usePathName === item.path
                                 ? "text-primary dark:text-white"
                                 : "text-dark hover:text-primary dark:text-white/70 dark:hover:text-white"
                             }`}
                           >
-                            {menuItem.title}
+                            {item.title}
                           </Link>
                         ) : (
                           <>
@@ -124,7 +128,7 @@ const AdminHeader = () => {
                               onClick={() => handleSubmenu(index)}
                               className="flex cursor-pointer items-center justify-between py-2 text-base text-dark group-hover:text-primary dark:text-white/70 dark:group-hover:text-white lg:mr-0 lg:inline-flex lg:px-0 lg:py-6"
                             >
-                              {menuItem.title}
+                              {item.title}
                               <span className="pl-3">
                                 <svg width="25" height="24" viewBox="0 0 25 24">
                                   <path
@@ -141,15 +145,18 @@ const AdminHeader = () => {
                                 openIndex === index ? "block" : "hidden"
                               }`}
                             >
-                              {/* {menuItem.submenu.map((submenuItem, index) => (
-                                <Link
-                                  href={submenuItem.path}
-                                  key={index}
-                                  className="block rounded py-2.5 text-sm text-dark hover:text-primary dark:text-white/70 dark:hover:text-white lg:px-3"
-                                >
-                                  {submenuItem.title}
-                                </Link>
-                              ))} */}
+                              {item.submenu &&
+                                item.submenu.map((submenuItem, index) =>
+                                  submenuItem.path ? (
+                                    <Link
+                                      href={submenuItem.path}
+                                      key={index}
+                                      className="block rounded py-2.5 text-sm text-dark hover:text-primary dark:text-white/70 dark:hover:text-white lg:px-3"
+                                    >
+                                      {submenuItem.title}
+                                    </Link>
+                                  ) : null
+                                )}
                             </div>
                           </>
                         )}
@@ -159,17 +166,18 @@ const AdminHeader = () => {
                 </nav>
               </div>
               <div className="flex items-center justify-end pr-16 lg:pr-0">
+                <div className="mr-4">
+                  {session?.user && (
+                    <p className="text-md text-bold text-dark dark:text-white">
+                      {session.user.email}
+                    </p>
+                  )}
+                </div>
                 <Link
-                  href="/layanan"
-                  className="hidden px-7 py-3 text-base font-medium text-dark hover:opacity-70 dark:text-white md:block"
-                >
-                  Layanan
-                </Link>
-                <Link
-                  href="/"
+                  href="/login"
                   className="ease-in-up shadow-btn hover:shadow-btn-hover hidden rounded-sm bg-primary px-8 py-3 text-base font-medium text-white transition duration-300 hover:bg-opacity-90 md:block md:px-9 lg:px-6 xl:px-9"
                 >
-                  Donasi
+                  Keluar
                 </Link>
                 <div>
                   <ThemeToggler />

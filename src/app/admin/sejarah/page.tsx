@@ -1,40 +1,40 @@
 'use client'
-import Breadcrumb from "@/components/Common/Breadcrumb";
 import React, { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash, faPenToSquare } from '@fortawesome/free-solid-svg-icons';
 import { useRouter } from "next/navigation";
-import { getSejarah, deleteSejarah } from "../../controller/sejarah";
-
+import { deleteSejarah, getSejarah } from "../controller/sejarah";
+import { useSession } from 'next-auth/react';
 
 const SejarahPage = () => {
     const [sejarah, setSejarah] = useState<{ [key: string]: any }[]>([]);
+    const { data: session } = useSession();
 
     const router = useRouter();
 
     const handleTambahClick = () => {
-      router.push('sejarah/tambah');
+      router.push('admin/sejarah/tambah');
     };
 
     const handleUbahClick = (sejarah) => {
-      router.push(`sejarah/ubah?id=${sejarah.id}`);
+      router.push(`admin/sejarah/ubah?id=${sejarah.id}`);
     };
 
     useEffect(() => {
       async function getData() {
-        const sejarah = await getSejarah();
+        const sejarah = await getSejarah(session);
         setSejarah(sejarah);
       }
       getData();
-    }, []);
+    }, [session]);
     
     return (
       <>
-        <Breadcrumb
-          pageName="Sejarah"
-          description="Sejarah Lembaga Inisiatif Lampung Sehat"
-        />
-
+      <div className='text-center'>
+        <h1 className="mb-2 text-2xl font-bold text-black dark:text-white">
+          SEJARAH
+        </h1>
+      </div>
         <div className="mx-10 mb-20 relative overflow-x-auto shadow-md sm:rounded-lg">
           <div className="flex justify-end mb-2">
             <a type="button" onClick={handleTambahClick} className=" cursor-pointer dark:text-gray-900 dark:bg-white border dark:border-gray-300 dark:focus:outline-none dark:hover:bg-gray-100 dark:focus:ring-4 dark:focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 bg-gray-800 text-white border-gray-600 hover:bg-gray-700 hover:border-gray-600 focus:ring-gray-700">
@@ -68,7 +68,8 @@ const SejarahPage = () => {
                     {item.deskripsi}
                   </td>
                   <td className="px-6 py-4">
-                    {item.timestamp?.toDate().toLocaleDateString()}
+                    {item.timestamp?.toDate().toLocaleDateString()} <br />
+                    {item.author}
                   </td>
                   <td className="px-6 py-4 justify-center">
                     <button 
@@ -82,7 +83,7 @@ const SejarahPage = () => {
                       onClick={async () => {
                         const isConfirmed = window.confirm('Apakah Anda yakin ingin menghapus data?');
                         if (isConfirmed) {
-                          const deletedSejarah = await deleteSejarah(item.id);
+                          const deletedSejarah = await deleteSejarah(item.id, session);
                           if (deletedSejarah) {
                             const updatedSejarah = sejarah.filter((t) => t.id !== deletedSejarah);
                             setSejarah(updatedSejarah);
