@@ -9,10 +9,10 @@ const Kontribusi = () => {
       
       <div style={{ textAlign: 'center', marginBottom: '50px'}}>
         <h1 style={{ fontSize: '2.5rem', marginBottom: '20px' }}>Kontribusi</h1>
-        <p style={{ fontSize: '1rem' }}> Berikut capaian kontribusi ILS dalam temuan dan pendampingan pasien TB di Lampung dari Januari 2021 hingga Desember 2023:</p>
+        <p style={{ fontSize: '1rem' }}> Berikut Capaian Kontribusi Lembaga Inisiatif Lampung Sehat dalam Penemuan dan Pendampingan Pasien TB di Provinsi Lampung :</p>
       </div>
       
-      <div style={{ margin: '0 auto' }}> {/* Menggunakan margin: 0 auto untuk menempatkan CardSlider di tengah-tengah */}
+      <div style={{ margin: '0 auto' }}> 
         <CardSlider />
       </div>
       

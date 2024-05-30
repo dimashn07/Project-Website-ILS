@@ -1,11 +1,15 @@
 'use client'
 import { useRouter } from "next/navigation";
 
-export function FormKontribusi({ handleSimpanClick, deskripsi, setDeskripsi }) {
+export function FormKontribusi({ handleSimpanClick, mode, jenis, setJenis, jumlah, setJumlah, keterangan, setKeterangan, setGambar }) {
     const router = useRouter();
 
     const handleKembaliClick = () => {
         router.push('../');
+    };
+
+    const handleFileChange = (e) => {
+        setGambar(e.target.files[0]); 
     };
 
     return (
@@ -15,8 +19,8 @@ export function FormKontribusi({ handleSimpanClick, deskripsi, setDeskripsi }) {
                     Jenis Capaian
                 </label>
                 <input
-                    type="text" id="jenis" name="jenis" placeholder="Masukkan jenis capaian"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    type="text" id="jenis" name="jenis" value={jenis} onChange={(e) => setJenis(e.target.value)} placeholder="Masukkan jenis capaian"
+                    required className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 />
             </div>
             <div className="mb-5">
@@ -24,8 +28,8 @@ export function FormKontribusi({ handleSimpanClick, deskripsi, setDeskripsi }) {
                     Jumlah
                 </label>
                 <input
-                    type="text" id="jumlah" name="jumlah" placeholder="Masukkan jumlah capaian"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    type="number" id="jumlah" name="jumlah" value={jumlah} onChange={(e) => setJumlah(e.target.value)} min={0}  placeholder="Masukkan jumlah capaian"
+                    required className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 />
             </div>
             <div className="mb-5">
@@ -33,10 +37,21 @@ export function FormKontribusi({ handleSimpanClick, deskripsi, setDeskripsi }) {
                     Keterangan
                 </label>
                 <input
-                    type="text" id="keterangan" name="keterangan" placeholder="Masukkan keterangan"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    type="text" id="keterangan" name="keterangan" value={keterangan} onChange={(e) => setKeterangan(e.target.value)} placeholder="Masukkan keterangan"
+                    required className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 />
             </div>
+            {mode === 'tambah' && (
+                <div className="mb-5">
+                    <label htmlFor="gambar" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                        Gambar
+                    </label>
+                    <input
+                        type="file" id="gambar" name="gambar" onChange={handleFileChange} 
+                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    />
+                </div>
+            )}
             <div className="flex justify-end justify-items-center">
                 <span onClick={handleKembaliClick} className=" cursor-pointer font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 bg-gray-500 text-gray-700 border-gray-600 hover:bg-gray-300 hover:border-gray-600 focus:ring-gray-700">
                     Kembali
