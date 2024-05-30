@@ -4,8 +4,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash, faPenToSquare } from '@fortawesome/free-solid-svg-icons';
 import { useRouter } from "next/navigation";
 import { Timestamp } from 'firebase/firestore';
+import { useSession } from 'next-auth/react';
+import { deleteKontribusi, getKontribusi } from '@/controller/kontribusi';
 
 const KontribusiPage = () => {
+    const [kontribusi, setKontribusi] = useState<{ [key: string]: any }[]>([]);
+    const { data: session } = useSession();
 
     const router = useRouter();
 
@@ -13,13 +17,21 @@ const KontribusiPage = () => {
       router.push('admin/kontribusi/tambah');
     };
 
-    const handleUbahClick = () => {
-      router.push(`admin/kontribusi/ubah`);
+    const handleUbahClick = (kontribusi) => {
+      router.push(`admin/kontribusi/ubah?id=${kontribusi.id}`);
     };
 
-    const handleHapusClick = () => {
-        alert('Yakin ingin meghapus?');
-      };
+    const formatNumber = (num) => {
+      return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+    };
+
+    useEffect(() => {
+      async function getData() {
+        const kontribusi = await getKontribusi(session);
+        setKontribusi(kontribusi);
+      }
+      getData();
+    }, [session]);
     
     return (
       <>
@@ -43,52 +55,70 @@ const KontribusiPage = () => {
                 <th scope="col" className="px-6 py-3 w-1/5"> 
                   Jenis Capaian
                 </th>
+                <th scope="col" className="px-6 py-3 w-1/5"> 
+                  Gambar
+                </th>
                 <th scope="col" className="px-6 py-3 w-0.5/5"> 
                   Jumlah
                 </th>
-                <th scope="col" className="px-6 py-3 w-1.5/5"> 
+                <th scope="col" className="px-6 py-3 w-1/5"> 
                   Keterangan
                 </th>
-                <th scope="col" className="px-6 py-3 w-1/5"> 
+                <th scope="col" className="px-6 py-3 w-0.5/5"> 
                   Terakhir Diperbarui
                 </th>
-                <th scope="col" className="px-6 py-3 w-1/5"> 
+                <th scope="col" className="px-6 py-3 w-0.5/5"> 
                   Aksi
                 </th>
               </tr>
             </thead>
             <tbody>
+              {kontribusi.map((item, index) => (
                 <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                   <td className="px-6 py-4">
-                    1
+                    {index+1}
                   </td>
                   <td className="px-6 py-4">
-                    Investigasi Kontak
+                    {item.jenis}
                   </td>
                   <td className="px-6 py-4">
-                    17.013
+                    <img src={item.gambar} alt="Gambar" />
                   </td>
                   <td className="px-6 py-4">
-                    *Berdasarkan laporan capaian Januari 2021 s.d Desember 2023.
+                    {formatNumber(item.jumlah)}
                   </td>
                   <td className="px-6 py-4">
-                    
+                    {item.keterangan}
+                  </td>
+                  <td className="px-6 py-4">
+                    {item.timestamp?.toDate().toLocaleDateString()} <br />
+                    {item.author}
                   </td>
                   <td className="px-6 py-4 justify-center">
                     <button 
                       type="button" className="mr-2"
-                      onClick={() => handleUbahClick()} 
+                      onClick={() => handleUbahClick(item)} 
                     >
                       <FontAwesomeIcon icon={faPenToSquare} size="xl" className="text-black dark:text-white" />
                     </button>
                     <button 
                       type="button" className="ml-2"
-                      onClick={handleHapusClick}                       
+                      onClick={async () => {
+                        const isConfirmed = window.confirm('Apakah Anda yakin ingin menghapus data?');
+                        if (isConfirmed) {
+                          const deletedKontribusi = await deleteKontribusi(item.id, item.gambar, session);
+                          if (deletedKontribusi) {
+                            const updatedSejarah = kontribusi.filter((t) => t.id !== deletedKontribusi);
+                            setKontribusi(updatedSejarah);
+                          }
+                        }
+                      }}                    
                     >
                       <FontAwesomeIcon icon={faTrash} size="xl" className="text-black dark:text-white"/>
                     </button>
                   </td>
                 </tr>
+              ))}
             </tbody>
           </table>
         </div>
