@@ -10,10 +10,10 @@ const VideoProfil = () => {
   const [isOpen, setOpen] = useState(false);
 
   return (
-    <section className="relative z-10 py-16 md:py-20 lg:py-28">
+    <section className="relative z-10 py-16 md:py-20 lg:py-28 ">
       <div className="container">
       <div className = "kontribusi">
-      <div style={{ textAlign: 'center', marginBottom: '50px'}}>
+      <div style={{ textAlign: 'center', marginBottom: '50px' }}>
         <h1 style={{ fontSize: '2.5rem', marginBottom: '20px' }}>Video Profile Inisiatif Lampung Sehat</h1>
         <p style={{ fontSize: '1rem' }}>  Inisiatif Lampung Sehat (ILS) merupakan 
                                           Non-Government Organization (NGO) 

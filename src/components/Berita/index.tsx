@@ -5,8 +5,8 @@ import SingleBlog from "./SingleBlog";
 
 import React, { useEffect, useState } from 'react';
 import { collection, onSnapshot, query, QueryDocumentSnapshot, DocumentData } from "firebase/firestore";
-import { Blog } from "@/types/blog";
 import { db } from "@/app/firebaseConfig";
+import { BlogType } from "@/types/blog";
 
 interface blogList {
   id: string;
@@ -19,12 +19,12 @@ interface blogList {
 }
 
 const Blog = () => {
-  const [blogPosts, setBlog] = useState<{ [key: string]: Blog[] }>({});
+  const [blogPosts, setBlog] = useState<{ [key: string]: BlogType[] }>({});
 
   useEffect(() => {
     const q = query(collection(db, 'blogPosts'))
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
-      let blogPostsObj: { [key: string]: Blog[] } = {};
+      let blogPostsObj: { [key: string]: BlogType[] } = {};
 
       querySnapshot.forEach((doc: QueryDocumentSnapshot<DocumentData>) => {
         const blogData = doc.data() as blogList;
@@ -43,7 +43,7 @@ const Blog = () => {
       // Reverse the order to display the latest posts first
       limitedKeys.reverse();
       // Create a new object with the limited keys and their corresponding blog posts
-      const limitedBlogPostsObj: { [key: string]: Blog[] } = {};
+      const limitedBlogPostsObj: { [key: string]: BlogType[] } = {};
       limitedKeys.forEach(key => {
         limitedBlogPostsObj[key] = blogPostsObj[key];
       });
@@ -60,7 +60,7 @@ const Blog = () => {
   return (
     <section
       id="blog"
-      className="bg-gray-light dark:bg-bg-color-dark py-16 md:py-20 lg:py-28"
+      className=" dark:bg-bg-color-dark py-16 md:py-20 lg:py-28"
     >
       <div className="container">
         <SectionTitle

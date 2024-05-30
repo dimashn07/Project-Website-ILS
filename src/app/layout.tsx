@@ -3,6 +3,7 @@
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import ScrollToTop from "@/components/ScrollToTop";
+import Layanan from "@/components/LayananIkon"
 import { Inter } from "next/font/google";
 import "react-modal-video/css/modal-video.css";
 import "../styles/index.css";
@@ -19,6 +20,7 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
           <Header />
           {children}
           <Footer />
+          <Layanan/>
           <ScrollToTop />
         </Providers>
       </body>
