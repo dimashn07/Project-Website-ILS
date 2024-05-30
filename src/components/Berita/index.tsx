@@ -5,11 +5,8 @@ import SingleBlog from "./SingleBlog";
 
 import React, { useEffect, useState } from 'react';
 import { collection, onSnapshot, query, QueryDocumentSnapshot, DocumentData } from "firebase/firestore";
-import { getFirestore } from "firebase/firestore";
-import firebase_app from "@/app/firebaseConfig";
-const db = getFirestore(firebase_app);
-
 import { Blog } from "@/types/blog";
+import { db } from "@/app/firebaseConfig";
 
 interface blogList {
   id: string;

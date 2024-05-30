@@ -6,6 +6,7 @@ import Breadcrumb from "@/components/Common/Breadcrumb";
 import SejarahPage from "./sejarah/page";
 import VisiMisiPage from "./visi-misi/page";
 import KontribusiPage from "./kontribusi/page";
+import StrukturOrganisasiPage from "./struktur-organisasi/page";
 
 export default function Home() {
 
@@ -15,11 +16,6 @@ export default function Home() {
       redirect('/');
     },
   });
-
-  // if (status === 'loading') {
-  //   // Loading state
-  //   return <div>Loading...</div>;
-  // }
 
   if (!session?.user) {
     return <div>Redirecting...</div>;
@@ -32,9 +28,11 @@ export default function Home() {
           pageName="Beranda"
           description="Lembaga Inisiatif Lampung Sehat"
         />
+        
         <KontribusiPage />
         <SejarahPage />
         <VisiMisiPage />
+        <StrukturOrganisasiPage />
       </AdminLayout>
     </>
   );

@@ -1,11 +1,11 @@
 'use client'
 import React, { useState } from 'react';
 import { FormSejarah } from '@/components/Admin/Form/FormSejarah';
-import { addSejarah } from "../../controller/sejarah";
 import { useRouter } from 'next/navigation';
 import Breadcrumb from "@/components/Common/Breadcrumb";
 import { useSession } from 'next-auth/react';
 import AdminLayout from '../../layout';
+import { addSejarah } from '@/controller/sejarah';
 
 const TambahSejarahPage = () => {
   const [deskripsi, setDeskripsi] = useState('');

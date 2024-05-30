@@ -3,8 +3,8 @@ import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPenToSquare, faTrash } from "@fortawesome/free-solid-svg-icons";
-import { deleteVisi, getVisi } from "../controller/visi";
-import { deleteMisi, getMisi } from "../controller/misi";
+import { deleteVisi, getVisi } from "@/controller/visi";
+import { deleteMisi, getMisi } from "@/controller/misi";
 import { useSession } from "next-auth/react";
 
 const VisiMisiPage = () => { 
