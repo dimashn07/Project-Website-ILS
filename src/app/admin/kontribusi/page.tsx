@@ -108,8 +108,8 @@ const KontribusiPage = () => {
                         if (isConfirmed) {
                           const deletedKontribusi = await deleteKontribusi(item.id, item.gambar, session);
                           if (deletedKontribusi) {
-                            const updatedSejarah = kontribusi.filter((t) => t.id !== deletedKontribusi);
-                            setKontribusi(updatedSejarah);
+                            const updatedKontribusi = kontribusi.filter((t) => t.id !== deletedKontribusi);
+                            setKontribusi(updatedKontribusi);
                           }
                         }
                       }}                    

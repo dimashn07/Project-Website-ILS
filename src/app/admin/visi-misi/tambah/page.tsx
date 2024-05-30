@@ -4,8 +4,8 @@ import Breadcrumb from "@/components/Common/Breadcrumb";
 import { FormVisi } from "@/components/Admin/Form/FormVisi";
 import { FormMisi } from "@/components/Admin/Form/FormMisi";
 import { useRouter } from "next/navigation";
-import { addVisi } from "@/app/admin/controller/visi";
-import { addMisi } from "@/app/admin/controller/misi";
+import { addVisi } from '@/controller/visi';
+import { addMisi } from '@/controller/misi';
 import AdminLayout from "../../layout";
 import { useSession } from "next-auth/react";
 

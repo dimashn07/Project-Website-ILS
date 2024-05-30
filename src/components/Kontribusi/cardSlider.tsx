@@ -76,21 +76,21 @@ const App = () => {
       <div className="rounded-xl relative shadow-lg overflow-hidden">
         <div className="w-[600px] h-[400px] relative">
           {sliderContent.map((item, i) => (
-            <Image
-              src={item.img}
-              key={i}
-              alt="slideImg"
-              className={`h-full w-full absolute object-cover inset-0 duration-[2.5s] ease-out transition-[clip-path] ${
-                i === active ? "clip-visible" : "clip-hidden"
-              }`}
-              layout="fill"
-            />
+            <img
+                src={item.img}
+                key={i}
+                alt="slideImg"
+                className={`h-full w-full absolute object-cover inset-0 duration-[2.5s] ease-out transition-[clip-path] ${
+                  i === active ? "clip-visible" : "clip-hidden"
+                }`}
+                style={{ transition: 'clip-path 2.5s ease-out' }}
+              />
           ))}
-          <Image
+          <img
             src={sliderContent[active]?.img || ""}
             alt="previmg"
             className="w-full h-full object-cover"
-            layout="fill"
+            style={{ transition: 'clip-path 2.5s ease-out' }}
           />
         </div>
         <div>
