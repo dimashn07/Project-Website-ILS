@@ -3,10 +3,8 @@ import { Blog } from "@/types/blog";
 import React, { useEffect, useState } from 'react';
 import { doc, getDoc } from "firebase/firestore";
 import { getFirestore } from "firebase/firestore";
-import firebase_app from "@/app/firebaseConfig";
 import ReactHtmlParser from 'react-html-parser';
-
-const db = getFirestore(firebase_app);
+import { db } from "@/app/firebaseConfig";
 
 interface blogList {
   id: string;

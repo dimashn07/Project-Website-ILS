@@ -1,62 +1,13 @@
-/*import { Feature } from "@/types/feature";
-
-const featuresData: Feature[] = [
-  {
-    id: 1,
-    title: "17,013",
-    paragraph:
-      "Investigasi Kontak",
-  },
-  {
-    id: 1,
-    title: "136,522",
-    paragraph:
-      "Terduga TB",
-  },
-  {
-    id: 1,
-    title: "11,566",
-    paragraph:
-      "Positif TB",
-  },
-  {
-    id: 1,
-    title: "9,047",
-    paragraph:
-      "Pasien Sembuh",
-  },
-  {
-    id: 1,
-    title: "385",
-    paragraph:
-      "TB RO di Dampingi",
-  },
-  {
-    id: 1,
-    title: "186",
-    paragraph:
-      "Intervensi DPPM",
-  },
-];
-export default featuresData;*/
-
-
-"use client"
-
+'use client'
 import { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/solid';
-
-const img1 = require ("/public/images/features/IK.svg");
-const img2 = require ("/public/images/features/Terduga-TB.svg");
-const img3 = require ("/public/images/features/Positif-TB.svg");
-const img4 = require ("/public/images/features/Pasien-Sembuh.svg");
-const img5 = require ("/public/images/features/DPPM.svg");
-const img6 = require ("/public/images/features/TB-Dampingi.svg");
+import { collection, getDocs, query } from "firebase/firestore";
+import { db } from '@/app/firebaseConfig';
 
 const App = () => {
   const [active, setActive] = useState<number>(0);
-  const [prev, setPrev] = useState<number>(0);
+  const [sliderContent, setSliderContent] = useState<SlideContent[]>([]);
 
   // Refs
   const contentRef = useRef<HTMLDivElement>(null);
@@ -64,49 +15,42 @@ const App = () => {
   const nextRef = useRef<HTMLButtonElement>(null);
   const nameRef = useRef<HTMLHeadingElement>(null);
 
+  const formatNumber = (num: number) => {
+    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+  };
+
   interface SlideContent {
-    img: any;
+    img: string;
     name: string;
+    description?: string;
   }
 
-  const sliderContent: SlideContent[] = [
-    {
-      img: img1,
-      name: "Investigasi Kontak => 17,013",
-    },
-    {
-      img: img2,
-      name: "Terduga TB => 136,522",
-    },
-    {
-      img: img3,
-      name: "Positif TB => 11,566",
-    },
-    {
-      img: img4,
-      name: "Pasien Sembuh => 9,047",
-    },
-    {
-      img: img5,
-      name: "TB RO di Dampingi => 385",
-    },
-    {
-      img: img6,
-      name: "Intervensi DPPM => 186",
-    },
-  ];
+  useEffect(() => {
+    const fetchData = async () => {
+      const kontribusiCollection = collection(db, 'kontribusi');
+      const querySnapshot = await getDocs(query(kontribusiCollection));
+      let fetchedContent: SlideContent[] = [];
+      querySnapshot.forEach((doc) => {
+        const kontribusiData = doc.data();
+        fetchedContent.push({
+          img: kontribusiData.gambar,
+          name: `${kontribusiData.jenis} => ${formatNumber(kontribusiData.jumlah)}`,
+          description: kontribusiData.keterangan,
+        });
+      });
+      setSliderContent(fetchedContent);
+    };
+
+    fetchData();
+  }, []);
 
   const Slide = (type: string) => {
-    let local: number;
     if (type === "next") {
-      local = active + 1;
-      sliderContent.length - 1 < local ? setActive(0) : setActive(local);
+      setActive((prevActive) => (prevActive + 1) % sliderContent.length);
     }
     if (type === "prev") {
-      local = active - 1;
-      local < 0 ? setActive(sliderContent.length - 1) : setActive(local);
+      setActive((prevActive) => (prevActive - 1 + sliderContent.length) % sliderContent.length);
     }
-    setPrev(active);
   };
 
   useEffect(() => {
@@ -116,7 +60,7 @@ const App = () => {
       nextRef.current.style.right = "-10%";
       setTimeout(() => {
         if (nameRef.current) {
-          nameRef.current.innerText = sliderContent[active].name;
+          nameRef.current.innerText = sliderContent[active]?.name || "";
         }
         if (contentRef.current && prevRef.current && nextRef.current) {
           contentRef.current.style.bottom = "0%";
@@ -125,26 +69,28 @@ const App = () => {
         }
       }, 1000);
     }
-  }, [active]);
+  }, [active, sliderContent]);
 
   return (
     <div>
       <div className="rounded-xl relative shadow-lg overflow-hidden">
         <div className="w-[600px] h-[400px] relative">
-          {sliderContent.map((slide, i) => (
+          {sliderContent.map((item, i) => (
             <Image
-              src={slide.img}
+              src={item.img}
               key={i}
               alt="slideImg"
               className={`h-full w-full absolute object-cover inset-0 duration-[2.5s] ease-out transition-[clip-path] ${
                 i === active ? "clip-visible" : "clip-hidden"
               }`}
+              layout="fill"
             />
           ))}
           <Image
-            src={sliderContent[prev].img}
+            src={sliderContent[active]?.img || ""}
             alt="previmg"
-            className="w-full h-full  object-cover"
+            className="w-full h-full object-cover"
+            layout="fill"
           />
         </div>
         <div>
@@ -161,9 +107,9 @@ const App = () => {
           </button>
         </div>
         <div className="content" ref={contentRef}>
-          <h1 ref={nameRef} className="text-black">{sliderContent[0].name}</h1>
+          <h1 ref={nameRef} className="text-black">{sliderContent[active]?.name}</h1>
           <p className="text-black">
-            *Berdasarkan laporan capaian Januari 2021 s.d Desember 2023.
+            {sliderContent[active]?.description || ""}
           </p>
         </div>
       </div>
