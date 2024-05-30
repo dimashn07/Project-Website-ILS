@@ -56,9 +56,15 @@ const VisiMisiPage = () => {
             </p>
             <h1 className="text-3xl font-semimatte mb-6">MISI</h1>
             <div className='text-justify'>
+<<<<<<< HEAD
+              {misi.map((item) => (
+                  <div key={item.id} className="text-lg mb-8">
+                    {item.id}. {item.deskripsi}
+=======
               {misi.map((item, index) => (
                   <div key={item.id} className="text-lg mb-4">
                     {index+1}. {item.deskripsi}
+>>>>>>> cef468ddce27c0efcfb86368be31f4c1a162afb9
                   </div>
                 ))}
             </div>
