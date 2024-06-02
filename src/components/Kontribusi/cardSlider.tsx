@@ -15,9 +15,12 @@ const App = () => {
   const nextRef = useRef<HTMLButtonElement>(null);
   const nameRef = useRef<HTMLHeadingElement>(null);
 
-  const formatNumber = (num: number) => {
+  const formatNumber = (num) => {
+    if (num === undefined || num === null) {
+      return '0';
+    }
     return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
-  };
+  }
 
   interface SlideContent {
     img: string;
