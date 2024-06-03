@@ -4,20 +4,20 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash, faPenToSquare } from '@fortawesome/free-solid-svg-icons';
 import { useRouter } from "next/navigation";
 import { useSession } from 'next-auth/react';
-import { deleteKontribusi, getKontribusi } from '@/controller/kontribusi';
+import { deleteModal, getModals } from '@/controller/modal';
 
-const KontribusiPage = () => {
-    const [kontribusi, setKontribusi] = useState<{ [key: string]: any }[]>([]);
+const ModalPage = () => {
+    const [modal, setModal] = useState<{ [key: string]: any }[]>([]);
     const { data: session } = useSession();
 
     const router = useRouter();
 
     const handleTambahClick = () => {
-      router.push('admin/kontribusi/tambah');
+      router.push('admin/modal/tambah');
     };
 
-    const handleUbahClick = (kontribusi) => {
-      router.push(`admin/kontribusi/ubah?id=${kontribusi.id}`);
+    const handleUbahClick = (modal) => {
+      router.push(`admin/modal/ubah?id=${modal.id}`);
     };
 
     const formatNumber = (num) => {
@@ -29,8 +29,8 @@ const KontribusiPage = () => {
 
     useEffect(() => {
       async function getData() {
-        const kontribusi = await getKontribusi(session);
-        setKontribusi(kontribusi);
+        const modal = await getModals(session);
+        setModal(modal);
       }
       getData();
     }, [session]);
@@ -39,7 +39,7 @@ const KontribusiPage = () => {
       <>
       <div className='text-center'>
         <h1 className="mb-2 text-2xl font-bold text-black dark:text-white">
-          KONTRIBUSI
+          MODAL
         </h1>
       </div>
         <div className="mx-10 mb-20 relative overflow-x-auto shadow-md sm:rounded-lg">
@@ -51,46 +51,28 @@ const KontribusiPage = () => {
           <table className="w-full text-sm text-center">
             <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
               <tr>
-                <th scope="col" className="px-6 py-3 w-0.5/5"> 
-                  No
-                </th>
-                <th scope="col" className="px-6 py-3 w-1/5"> 
-                  Jenis Capaian
-                </th>
-                <th scope="col" className="px-6 py-3 w-1/5"> 
+                <th scope="col" className="px-6 py-3 w-1.5/5"> 
                   Gambar
                 </th>
-                <th scope="col" className="px-6 py-3 w-0.5/5"> 
-                  Jumlah
-                </th>
-                <th scope="col" className="px-6 py-3 w-1/5"> 
-                  Keterangan
+                <th scope="col" className="px-6 py-3 w-2/5"> 
+                  Deskripsi
                 </th>
                 <th scope="col" className="px-6 py-3 w-0.5/5"> 
                   Terakhir Diperbarui
                 </th>
-                <th scope="col" className="px-6 py-3 w-0.5/5"> 
+                <th scope="col" className="px-6 py-3 w-1/5"> 
                   Aksi
                 </th>
               </tr>
             </thead>
             <tbody>
-              {kontribusi.map((item, index) => (
+              {modal.map((item) => (
                 <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                  <td className="px-6 py-4">
-                    {index+1}
-                  </td>
-                  <td className="px-6 py-4">
-                    {item.jenis}
-                  </td>
                   <td className="px-6 py-4">
                     <img src={item.gambar} alt="Gambar" />
                   </td>
-                  <td className="px-6 py-4">
-                    {formatNumber(item.jumlah)}
-                  </td>
-                  <td className="px-6 py-4">
-                    {item.keterangan}
+                  <td className="px-6 py-4 text-justify">
+                    {item.deskripsi}
                   </td>
                   <td className="px-6 py-4">
                     {item.timestamp?.toDate().toLocaleDateString()} <br />
@@ -108,10 +90,10 @@ const KontribusiPage = () => {
                       onClick={async () => {
                         const isConfirmed = window.confirm('Apakah Anda yakin ingin menghapus data?');
                         if (isConfirmed) {
-                          const deletedKontribusi = await deleteKontribusi(item.id, item.gambar, session);
-                          if (deletedKontribusi) {
-                            const updatedKontribusi = kontribusi.filter((t) => t.id !== deletedKontribusi);
-                            setKontribusi(updatedKontribusi);
+                          const deletedModal = await deleteModal(item.id, item.gambar, session);
+                          if (deletedModal) {
+                            const updatedModal = modal.filter((t) => t.id !== deletedModal);
+                            setModal(updatedModal);
                           }
                         }
                       }}                    
@@ -128,4 +110,4 @@ const KontribusiPage = () => {
     );
 };
 
-export default KontribusiPage;
+export default ModalPage;

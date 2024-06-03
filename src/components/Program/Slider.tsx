@@ -1,21 +1,50 @@
 "use client";
-
-import Image from "next/image";
 import { useEffect, useState } from "react";
-
-import { images } from "@/types/constants";
 import Description from "./Description";
+import { collection, getDocs, query } from "firebase/firestore";
+import { db } from "@/app/firebaseConfig";
+import { useRouter } from "next/navigation";
 
 const Slider = () => {
   const [activeImage, setActiveImage] = useState(0);
   const [isZoomed, setIsZoomed] = useState(false);
+  const [sliderContent, setSliderContent] = useState<SlideContent[]>([]);
+
+  const router = useRouter();
+
+  interface SlideContent {
+    src: string;
+    title: string;
+    desc: string;
+    link: string
+  }
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const programCollection = collection(db, 'program');
+      const querySnapshot = await getDocs(query(programCollection));
+      let fetchedContent: SlideContent[] = [];
+      querySnapshot.forEach((doc) => {
+        const programData = doc.data();
+        fetchedContent.push({
+          src: programData.gambar,
+          title: programData.judul,
+          desc: programData.deskripsi,
+          link: programData.berita,
+        });
+      });
+      setSliderContent(fetchedContent);
+    };
+
+    fetchData();
+  }, []);
 
   const clickNext = () => {
-    setActiveImage(activeImage === images.length - 1 ? 0 : activeImage + 1);
+    setActiveImage(activeImage === sliderContent.length - 1 ? 0 : activeImage + 1);
   };
 
   const clickPrev = () => {
-    setActiveImage(activeImage === 0 ? images.length - 1 : activeImage - 1);
+    setActiveImage(activeImage === 0 ? sliderContent.length - 1 : activeImage - 1);
   };
 
   useEffect(() => {
@@ -29,13 +58,14 @@ const Slider = () => {
 
   const handleImageClick = (index) => {
     console.log("View details of image:", index);
-    // Handle click event, e.g., navigate to details page
+    const link = sliderContent[index].link;
+    router.push(link);
   };
 
   return (
     <main className="grid place-items-center md:grid-cols-2 grid-cols-1 w-full mx-auto max-w-5xl shadow-2xl rounded-3xl overflow-hidden relative">
       <div className="w-full h-full relative overflow-hidden">
-        {images.map((elem, idx) => (
+        {sliderContent.map((elem, idx) => (
           <div
             key={idx}
             className={`absolute top-0 left-0 w-full h-full transition-transform duration-500 ease-in-out ${
@@ -46,11 +76,9 @@ const Slider = () => {
             onMouseLeave={() => setIsZoomed(false)}
             onClick={() => handleImageClick(idx)}
           >
-            <Image
+            <img
               src={elem.src}
-              alt=""
-              width={400}
-              height={400}
+              alt={elem.title}
               className="w-full h-full object-cover cursor-pointer"
             />
           </div>
@@ -60,6 +88,7 @@ const Slider = () => {
         activeImage={activeImage}
         clickNext={clickNext}
         clickPrev={clickPrev}
+        images={sliderContent}
       />
     </main>
   );

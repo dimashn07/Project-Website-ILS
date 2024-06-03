@@ -1,14 +1,14 @@
 import React from "react";
-import { images } from "@/types/constants";
 import { motion } from "framer-motion";
 
 type Props = {
-  activeImage: any;
-  clickNext: any;
-  clickPrev: any;
+  activeImage: number;
+  clickNext: () => void;
+  clickPrev: () => void;
+  images: { src: string; title: string; desc: string }[];
 };
 
-const Description = ({ activeImage, clickNext, clickPrev }: Props) => {
+const Description = ({ activeImage, clickNext, clickPrev, images }: Props) => {
   const leftSvg = (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -39,9 +39,9 @@ const Description = ({ activeImage, clickNext, clickPrev }: Props) => {
 
   return (
     <div className="grid place-items-start w-full bg-[#a3da22] relative md:rounded-tr-3xl md:rounded-br-3xl">
-      <div className="uppercase text-sm absolute right-4 top-2 underline-offset-4 underline">
+      {/* <div className="uppercase text-sm absolute right-4 top-2 underline-offset-4 underline">
         Program Inisiatif Lampung Sehat
-      </div>
+      </div> */}
       {images.map((elem, idx) => (
         <div
           key={idx}
@@ -67,7 +67,12 @@ const Description = ({ activeImage, clickNext, clickPrev }: Props) => {
             }}
             className="w-full"
           >
-            <div className="pt-16 pb-16 text-3xl font-extrabold">{elem.title}</div>
+            <div className="pt-16 pb-16 text-3xl font-extrabold">
+              Inisiatif Lampung Sehat 
+              <div className="mt-6 text-5xl text-center">
+              {elem.title}
+              </div>
+            </div>
             <div className="leading-relaxed font-medium text-base tracking-wide h-60 md:h-40 italic text-gray-600">
               {elem.desc}
             </div>

@@ -71,8 +71,8 @@ const UbahKontribusiPage = () => {
     <>
     <AdminLayout>
       <Breadcrumb
-        pageName="Sejarah"
-        description="Sejarah Lembaga Inisiatif Lampung Sehat"
+        pageName="Kontribusi"
+        description="Kontribusi Lembaga Inisiatif Lampung Sehat"
       />
 
       <div className="mx-10 mb-20 flex flex-col items-center justify-center">
