@@ -9,6 +9,8 @@ import SejarahPage from "./sejarah/page";
 import VisiMisiPage from "./visi-misi/page";
 import KontribusiPage from "./kontribusi/page";
 import StrukturOrganisasiPage from "./struktur-organisasi/page";
+import ProgramPage from "./program/page";
+import ModalPage from "./modal/page";
 
 export default function Home() {
 
@@ -37,6 +39,8 @@ export default function Home() {
           description="Lembaga Inisiatif Lampung Sehat"
         />
         
+        <ModalPage />
+        <ProgramPage />
         <KontribusiPage />
         <SejarahPage />
         <VisiMisiPage />

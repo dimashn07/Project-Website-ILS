@@ -1,9 +1,9 @@
 import Link from "next/link";
-import { Blog } from "@/types/blog";
+import { BlogType } from "@/types/blog";
 import React, { useEffect, useState } from 'react';
 import { doc, getDoc } from "firebase/firestore";
 import { getFirestore } from "firebase/firestore";
-import ReactHtmlParser from 'react-html-parser';
+// import ReactHtmlParser from 'react-html-parser';
 import { db } from "@/app/firebaseConfig";
 
 interface blogList {
@@ -16,7 +16,7 @@ interface blogList {
   category: string;
 }
 
-const SingleBlog = ({ blog }: { blog: Blog }) => {
+const SingleBlog = ({ blog }: { blog: BlogType }) => {
   const [blogData, setBlogData] = useState<blogList | null>(null);
 
   useEffect(() => {
@@ -73,7 +73,7 @@ const SingleBlog = ({ blog }: { blog: Blog }) => {
             </Link>
           </h3>
           <p className="mb-6 border-b border-body-color border-opacity-10 pb-6 text-base font-medium text-body-color dark:border-white dark:border-opacity-10 line-clamp-2 flex-grow">
-            {ReactHtmlParser(truncatedContent)}
+            {/* {ReactHtmlParser(truncatedContent)} */}
           </p>
           <div className="flex items-center">
             <div className="inline-block">
