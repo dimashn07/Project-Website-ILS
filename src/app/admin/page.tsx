@@ -12,6 +12,7 @@ import StrukturOrganisasiPage from "./struktur-organisasi/page";
 import ProgramPage from "./program/page";
 import ModalPage from "./modal/page";
 import VideoProfilPage from "./video-profil/page";
+import KerjasamaPage from "./kerjasama/page";
 
 export default function Home() {
 
@@ -47,6 +48,7 @@ export default function Home() {
         <SejarahPage />
         <VisiMisiPage />
         <StrukturOrganisasiPage />
+        <KerjasamaPage />
       </AdminLayout>
     </>
   );

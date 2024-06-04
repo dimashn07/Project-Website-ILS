@@ -31,7 +31,7 @@ const VideoProfilPage = () => {
     return (
       <>
       <div className='text-center'>
-        <h1 className="mb-4 text-2xl font-bold text-black dark:text-white">
+        <h1 className="mb-2 text-2xl font-bold text-black dark:text-white">
           VIDEO PROFIL
         </h1>
       </div>
