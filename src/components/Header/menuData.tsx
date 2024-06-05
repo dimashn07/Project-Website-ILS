@@ -41,7 +41,7 @@ const menuData: Menu[] = [
       {
         id: 31,
         title: "Sebaran Wilayah",
-        path: "",
+        path: "/pelaksana/sebaran-wilayah",
         newTab: false,
       },
       {
