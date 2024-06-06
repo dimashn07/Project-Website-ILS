@@ -1,6 +1,8 @@
-const Contact = () => {
+import React from 'react';
+
+const LayananForm = ({ handleSimpanClick, nama, setNama, jenisKelamin, setJenisKelamin, email, setEmail, whatsapp, setWhatsapp, jenisLayanan, setJenisLayanan, keterangan, setKeterangan }) => {
   return (
-    <section id="contact" className="overflow-hidden py-16 md:py-20 lg:py-28">
+    <section id="contact" className="overflow-hidden py-4 md:py-6 lg:py-8 pb-20">
       <div className="container flex justify-center">
         <div className="-mx-4 flex flex-wrap">
           <div className="w-full px-4 lg:w-7/12 xl:w-8/12 mx-auto">
@@ -11,22 +13,71 @@ const Contact = () => {
               <h2 className="mb-3 text-2xl font-bold text-black dark:text-white sm:text-3xl lg:text-2xl xl:text-3xl">
                 Hai, ada yang bisa kami bantu?
               </h2>
-              <p className="mb-12 text-base font-medium text-body-color">
+              <p className="mb-12 text-base font-medium text-body-color text-justify">
                 Kirimkan pesan atau pertanyaan Anda melalui formulir di bawah ini. Kami akan segera merespons pertanyaan Anda.
               </p>
-              <form>
+              <form onSubmit={handleSimpanClick}>
                 <div className="-mx-4 flex flex-wrap">
                   <div className="w-full px-4 md:w-1/2">
                     <div className="mb-8">
                       <label
-                        htmlFor="name"
+                        htmlFor="nama"
                         className="mb-3 block text-sm font-medium text-dark dark:text-white"
                       >
-                        Nama kamu
+                        Nama
                       </label>
                       <input
-                        type="text"
-                        placeholder="Masukan Nama Kamu"
+                        type="text" id="nama" name="nama" required
+                        value={nama} onChange={(e) => setNama(e.target.value)} placeholder="Masukan Nama Anda"
+                        className="border-stroke w-full rounded-sm border bg-[#f8f8f8] px-6 py-3 text-base text-body-color outline-none focus:border-primary dark:border-transparent dark:bg-[#2C303B] dark:text-body-color-dark dark:shadow-two dark:focus:border-primary dark:focus:shadow-none"
+                      />
+                    </div>
+                  </div>
+                  <div className="w-full px-4 md:w-1/2">
+                    <div className="mb-8">
+                      <label
+                        htmlFor="jenisKelamin"
+                        className="mb-3 block text-sm font-medium text-dark dark:text-white"
+                      >
+                        Jenis Kelamin
+                      </label>
+                      <div className="relative">
+                        <select
+                          id="jenisKelamin" name="jenisKelamin" required
+                          value={jenisKelamin} onChange={(e) => setJenisKelamin(e.target.value)}
+                          className="appearance-none border-stroke w-full rounded-sm border bg-[#f8f8f8] px-6 py-3 text-base text-body-color outline-none focus:border-primary dark:border-transparent dark:bg-[#2C303B] dark:text-body-color-dark dark:shadow-two dark:focus:border-primary dark:focus:shadow-none"
+                        >
+                          <option value="" disabled selected hidden>Pilih Jenis Kelamin</option>
+                          <option value="Laki-Laki">Laki-laki</option>
+                          <option value="Perempuan">Perempuan</option>
+                        </select>
+                        <div className="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
+                          <svg
+                            className="w-5 h-5 text-gray-400 dark:text-gray-300"
+                            fill="none"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="2"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                          >
+                            <path d="M9 5l7 7-7 7"></path>
+                          </svg>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="w-full px-4 md:w-1/2">
+                    <div className="mb-8">
+                      <label
+                        htmlFor="whatsapp"
+                        className="mb-3 block text-sm font-medium text-dark dark:text-white"
+                      >
+                        No. Whatsapp
+                      </label>
+                      <input
+                        type="text" id="whatsapp" name="whatsapp" required
+                        value={whatsapp} onChange={(e) => setWhatsapp(e.target.value)} placeholder="Masukan Nomor WhatsApp Anda"
                         className="border-stroke w-full rounded-sm border bg-[#f8f8f8] px-6 py-3 text-base text-body-color outline-none focus:border-primary dark:border-transparent dark:bg-[#2C303B] dark:text-body-color-dark dark:shadow-two dark:focus:border-primary dark:focus:shadow-none"
                       />
                     </div>
@@ -40,8 +91,8 @@ const Contact = () => {
                         Email
                       </label>
                       <input
-                        type="email"
-                        placeholder="Masukan No WA Kamu"
+                        type="email" id="email" name="email" required
+                        value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Masukan E-mail Anda"
                         className="border-stroke w-full rounded-sm border bg-[#f8f8f8] px-6 py-3 text-base text-body-color outline-none focus:border-primary dark:border-transparent dark:bg-[#2C303B] dark:text-body-color-dark dark:shadow-two dark:focus:border-primary dark:focus:shadow-none"
                       />
                     </div>
@@ -49,68 +100,21 @@ const Contact = () => {
                   <div className="w-full px-4 md:w-1/2">
                     <div className="mb-8">
                       <label
-                        htmlFor="wa"
+                        htmlFor="jenisLayanan"
                         className="mb-3 block text-sm font-medium text-dark dark:text-white"
                       >
-                        No Whatsapp
-                      </label>
-                      <input
-                        type="email"
-                        placeholder="Masukan Email Kamu"
-                        className="border-stroke w-full rounded-sm border bg-[#f8f8f8] px-6 py-3 text-base text-body-color outline-none focus:border-primary dark:border-transparent dark:bg-[#2C303B] dark:text-body-color-dark dark:shadow-two dark:focus:border-primary dark:focus:shadow-none"
-                      />
-                    </div>
-                  </div>
-                  <div className="w-full px-4 md:w-1/2">
-                    <div className="mb-8">
-                      <label
-                        htmlFor="gender"
-                        className="mb-3 block text-sm font-medium text-dark dark:text-white"
-                      >
-                        Jenis Kelamin
+                        Jenis Layanan
                       </label>
                       <div className="relative">
                         <select
-                          id="gender"
+                          id="jenisLayanan" name="jenisLayanan" required
+                          value={jenisLayanan} onChange={(e) => setJenisLayanan(e.target.value)}
                           className="appearance-none border-stroke w-full rounded-sm border bg-[#f8f8f8] px-6 py-3 text-base text-body-color outline-none focus:border-primary dark:border-transparent dark:bg-[#2C303B] dark:text-body-color-dark dark:shadow-two dark:focus:border-primary dark:focus:shadow-none"
                         >
-                          <option value="" disabled selected hidden>Pilih Jenis Kelamin</option>
-                          <option value="male">Laki-laki</option>
-                          <option value="female">Perempuan</option>
-                        </select>
-                        <div className="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
-                          <svg
-                            className="w-5 h-5 text-gray-400 dark:text-gray-300"
-                            fill="none"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth="2"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                          >
-                            <path d="M9 5l7 7-7 7"></path>
-                          </svg>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="w-full px-4 md:w-1/2">
-                    <div className="mb-8">
-                      <label
-                        htmlFor="Question1"
-                        className="mb-3 block text-sm font-medium text-dark dark:text-white"
-                      >
-                        Jenis Pertanyaan
-                      </label>
-                      <div className="relative">
-                        <select
-                          id="gender"
-                          className="appearance-none border-stroke w-full rounded-sm border bg-[#f8f8f8] px-6 py-3 text-base text-body-color outline-none focus:border-primary dark:border-transparent dark:bg-[#2C303B] dark:text-body-color-dark dark:shadow-two dark:focus:border-primary dark:focus:shadow-none"
-                        >
-                          <option value="" disabled selected hidden>Pilih Jenis Pertanyaan</option>
-                          <option value="male">Pelayanan Publik</option>
-                          <option value="male">Resisten Obat</option>
-                          <option value="female">Temuan Kasus</option>
+                          <option value="" disabled selected hidden>Pilih Jenis Layanan</option>
+                          <option value="Pelayanan Publik">Pelayanan Publik</option>
+                          <option value="Resisten Obat">Resisten Obat</option>
+                          <option value="Temuan Kasus">Temuan Kasus</option>
                         </select>
                         <div className="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
                           <svg
@@ -131,21 +135,22 @@ const Contact = () => {
                   <div className="w-full px-4">
                     <div className="mb-8">
                       <label
-                        htmlFor="message"
+                        htmlFor="keterangan"
                         className="mb-3 block text-sm font-medium text-dark dark:text-white"
                       >
-                        Keterangan Tambahan
+                        Keterangan
                       </label>
                       <textarea
-                        name="message"
+                        id="keterangan" name="keterangan" required
+                        value={keterangan} onChange={(e) => setKeterangan(e.target.value)}
                         rows={5}
-                        placeholder="Masukan Keterangan Tambahan"
+                        placeholder="Masukan Keterangan"
                         className="border-stroke w-full resize-none rounded-sm border bg-[#f8f8f8] px-6 py-3 text-base text-body-color outline-none focus:border-primary dark:border-transparent dark:bg-[#2C303B] dark:text-body-color-dark dark:shadow-two dark:focus:border-primary dark:focus:shadow-none"
                       ></textarea>
                     </div>
                   </div>
-                  <div className="w-full px-4">
-                    <button className="rounded-sm bg-primary px-9 py-4 text-base font-medium text-white shadow-submit duration-300 hover:bg-primary/90 dark:shadow-submit-dark">
+                  <div className="w-full px-4 flex justify-end">
+                    <button type="submit" className="rounded-sm bg-primary px-9 py-4 text-base font-medium text-white shadow-submit duration-300 hover:bg-primary/90 dark:shadow-submit-dark">
                       Kirim
                     </button>
                   </div>
@@ -159,4 +164,4 @@ const Contact = () => {
   );
 };
 
-export default Contact;
+export default LayananForm;
