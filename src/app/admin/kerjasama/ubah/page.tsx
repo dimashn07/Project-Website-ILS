@@ -57,7 +57,7 @@ const UbahKerjasamaPage = () => {
         setSelectedItem(null);
   
         alert('Data berhasil diubah');
-        router.push('../');
+        router.push('/admin/pelaksana');
       } catch (error) {
         console.error('ERROR', error);
       }

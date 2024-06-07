@@ -1,6 +1,6 @@
 import { useRouter, usePathname } from "next/navigation";
 import { FaUser } from "react-icons/fa";
-import { Tooltip } from 'react-tooltip';
+// import { Tooltip } from 'react-tooltip';
 
 export default function Layanan() {
     const router = useRouter();
@@ -30,10 +30,10 @@ export default function Layanan() {
                     <FaUser className="h-6 w-6" />
                 </div>
             </div>
-            <Tooltip
+            {/* <Tooltip
                 id="user-service-tooltip"
                 style={{ backgroundColor: "#A3DA22", color: "#222" }}
-            /> 
+            />  */}
         </>
     );
 }

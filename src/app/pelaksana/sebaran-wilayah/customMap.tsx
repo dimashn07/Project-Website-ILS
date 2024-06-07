@@ -1,5 +1,4 @@
 "use client"
-
 import React, { useState } from 'react';
 import { GoogleMap, Marker } from '@react-google-maps/api';
 import { useJsApiLoader } from '@react-google-maps/api';
@@ -8,10 +7,7 @@ type MarkerType = {
   position: { lat: number, lng: number },
   title: string,
   address: {
-    line1: string,
-    line2: string,
-    line3: string,
-    line4: string,
+    line: string,
     link: string
   }
 };
@@ -51,9 +47,8 @@ const CustomMap = ({ markers, center }: { markers: MarkerType[], center: { lat: 
       )}
       {selectedMarker && (
         <div className="absolute top-2 left-2 bg-white p-2 rounded-lg shadow-md max-w-xs">
-          <h3 className="text-sm font-semibold">{selectedMarker.title}</h3>
-          <p className="text-xs">{selectedMarker.address.line1}, {selectedMarker.address.line2}</p>
-          <p className="text-xs">{selectedMarker.address.line3}, {selectedMarker.address.line4}</p>
+          <h3 className="text-sm font-semibold">Inisiatif Lampung Sehat <br /> {selectedMarker.title}</h3>
+          <p className="text-xs">{selectedMarker.address.line}</p>
           <p>
             <a href={selectedMarker.address.link} target="_blank" rel="noopener noreferrer" className="text-blue-600 text-xs">View on Google Maps</a>
           </p>
