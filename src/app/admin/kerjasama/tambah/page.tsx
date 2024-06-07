@@ -27,7 +27,7 @@ const TambahKerjasamaPage = () => {
           setLogo(null);
           
           alert('Data berhasil ditambahkan');
-          router.push('../');
+          router.push('/admin/pelaksana');
         }
       }else{
         alert('Tidak ada file yang dipilih');

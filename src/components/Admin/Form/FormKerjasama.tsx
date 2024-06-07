@@ -5,7 +5,7 @@ export function FormKerjasama({ handleSimpanClick, mode, instansi, setInstansi, 
     const router = useRouter();
 
     const handleKembaliClick = () => {
-        router.push('../');
+        router.push('/admin/pelaksana');
     };
 
     const handleFileChange = (e) => {
