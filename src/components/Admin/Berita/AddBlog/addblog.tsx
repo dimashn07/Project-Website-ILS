@@ -16,10 +16,13 @@ const CreateBlogPostForm = () => {
   const [content, setContent] = useState('');
   const [tags, setTags] = useState('');
   const [category, setCategory] = useState('');
+  const [submenu, setSubmenu] = useState('');
   const [error, setError] = useState(null);
   const [imageURL, setImageURL] = useState('');
+  const [coverImageURL, setCoverImageURL] = useState('');
 
-  const editorRef = useRef(null);
+  const editorRef = useRef<FroalaEditor | null>(null);
+  const coverImageRef = useRef<HTMLInputElement>(null);
 
   const handleImageUpload = async (file) => {
     try {
@@ -32,32 +35,53 @@ const CreateBlogPostForm = () => {
     }
   };
 
+  const handleCoverImageUpload = async (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      try {
+        const downloadURL = await uploadImageToFirebase(file);
+        setCoverImageURL(downloadURL);
+      } catch (error) {
+        console.error('Error uploading cover image:', error);
+        throw new Error('Failed to upload cover image');
+      }
+    }
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
 
     const formattedDate = format(new Date(), 'dd MMMM yyyy');
 
-    // Data yang akan ditambahkan ke Firebase
+    const titleKeywords = title.toLowerCase().split(' ').filter(word => word !== '');
+
     const data = {
       title: title,
       content: content,
       tags: tags.split(',').map(tag => tag.trim()), // Pisahkan tag dengan koma dan hapus spasi di sekitarnya
       category: category,
+      submenu: submenu,
       createdAt: formattedDate,
       image: imageURL,
+      coverImage: coverImageURL,
+      titleKeywords: titleKeywords,
     };
 
     try {
       const newId = await getNextId();
       await addData('blogPosts', newId.toString(), data);
       console.log('Document added successfully!');
-      // Reset semua state setelah pengiriman berhasil
       setTitle('');
       setContent('');
       setTags('');
       setCategory('');
+      setSubmenu('');
       setImageURL('');
+      setCoverImageURL('');
       setError(null);
+      if (coverImageRef.current) {
+        coverImageRef.current.value = '';
+      }
     } catch (e) {
       console.error('Error adding document: ', e);
       setError(e.message || 'Terjadi kesalahan saat menambahkan dokumen.');
@@ -83,7 +107,6 @@ const CreateBlogPostForm = () => {
             charCounterCount: false,
             placeholderText: 'Tuliskan isi berita disini...',
             imageUpload: true,
-            //imageUploadURL: 'http://localhost:3000/api/upload-image',
             events: {
               'image.beforeUpload': async (files) => {
                 const file = files[0];
@@ -112,6 +135,20 @@ const CreateBlogPostForm = () => {
       <div className="mb-6">
         <label htmlFor="category" className="block mb-2 text-sm font-medium text-gray-700">Kategori</label>
         <input type="text" id="category" value={category} onChange={(e) => setCategory(e.target.value)} className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-primary" />
+      </div>
+      <div className="mb-6">
+        <label htmlFor="submenu" className="block mb-2 text-sm font-medium text-gray-700">Submenu</label>
+        <select id="submenu" value={submenu} onChange={(e) => setSubmenu(e.target.value)} className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-primary">
+          <option value="" disabled hidden>Pilih Submenu</option>
+          <option value="Eliminasi TB">Eliminasi TB</option>
+          <option value="UMKM">UMKM</option>
+          <option value="Layanan Kesehatan Publik">Layanan Kesehatan Publik</option>
+          <option value="Berita Lainnya">Berita Lainnya</option>
+        </select>
+      </div>
+      <div className="mb-6">
+        <label htmlFor="coverImage" className="block mb-2 text-sm font-medium text-gray-700">Gambar Sampul</label>
+        <input type="file" id="coverImage" onChange={handleCoverImageUpload} className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-primary" ref={coverImageRef} />
       </div>
       <button type="submit" className="w-full px-4 py-2 text-white bg-primary rounded-lg hover:bg-opacity-90">Kirim Berita</button>
     </form>

@@ -7,11 +7,8 @@ import TagButton from "@/components/Berita/TagButton";
 import React from 'react'
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation'
-import { doc, getDoc } from "firebase/firestore";
-import { getFirestore } from "firebase/firestore";
-import firebase_app from "@/app/firebaseConfig";
-
-const db = getFirestore(firebase_app);
+import { doc, getDoc, query, where, getDocs, collection } from "firebase/firestore";
+import { db } from '@/app/firebaseConfig';
 
 interface BlogPost {
   id: string;
@@ -20,12 +17,41 @@ interface BlogPost {
   tags: string[];
   category: string;
   createdAt: string;
+  coverImage: string;
 }
 
 const BlogSidebarPage = () => {
+  const [relatedPosts, setRelatedPosts] = useState<BlogPost[]>([]);
+  const [popularCategory, setPopularCategory] = useState([]);
+  const [popularTags, setPopularTags] = useState<string[]>([]);
   const [blogPost, setBlogPost] = useState<BlogPost | null>(null);
   const searchParams = useSearchParams();
   const id = searchParams?.get('id');
+
+  const [searchQuery, setSearchQuery] = useState('');
+  const [searchResults, setSearchResults] = useState<BlogPost[]>([]);
+
+  const handleSearchChange = (event) => {
+    setSearchQuery(event.target.value);
+  };
+
+  const handleSearch = async () => {
+    try {
+      const searchKeywords = searchQuery.toLowerCase().split(" ").filter((word) => word !== "");
+      if (searchKeywords.length === 0) return;
+
+      const q = query(
+        collection(db, "blogPosts"),
+        where("titleKeywords", "array-contains-any", searchKeywords)
+      );
+      const querySnapshot = await getDocs(q);
+      const results = querySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
+      setSearchResults(results);
+    } catch (error) {
+      console.error("Error searching posts:", error);
+    }
+  };
+
 
   useEffect(() => {
     const fetchBlogPost = async () => {
@@ -34,8 +60,10 @@ const BlogSidebarPage = () => {
           const docRef = doc(db, 'blogPosts', id);
           const docSnap = await getDoc(docRef);
           if (docSnap.exists()) {
-            const data = docSnap.data() as BlogPost;
+            const data = docSnap.data();
             setBlogPost({ ...data, id });
+
+            fetchRelatedPosts(data.category, data.tags);
           } else {
             console.log("No such document!");
           }
@@ -45,7 +73,67 @@ const BlogSidebarPage = () => {
       }
     };
 
+    const fetchRelatedPosts = async (category, tags) => {
+      try {
+        const q = query(
+          collection(db, 'blogPosts'),
+          where('category', '==', category),
+          where('tags', 'array-contains-any', tags)
+        );
+        const querySnapshot = await getDocs(q);
+        const relatedPostsData = querySnapshot.docs
+          .map(doc => ({ ...doc.data(), id: doc.id }))
+          .filter((post) => post.id !== id);
+        setRelatedPosts(relatedPostsData);
+      } catch (error) {
+        console.error("Error getting related posts:", error);
+      }
+    };
+
+    const fetchPopularCategory = async () => {
+      try {
+        const categoryCollection = collection(db, 'blogPosts');
+        const categorySnapshot = await getDocs(categoryCollection);
+        const categoryCounts: { [key: string]: number } = {};
+
+        categorySnapshot.docs.forEach(doc => {
+          const category = doc.data().category;
+          if (category) {
+            categoryCounts[category] = (categoryCounts[category] || 0) + 1;
+          }
+        });
+
+        const sortedCategories = Object.keys(categoryCounts).sort((a, b) => categoryCounts[b] - categoryCounts[a]);
+        setPopularCategory(sortedCategories);
+      } catch (error) {
+        console.error("Error getting popular categories:", error);
+      }
+    };
+
+    const fetchPopularTags = async () => {
+      try {
+        const postsSnapshot = await getDocs(collection(db, 'blogPosts'));
+        const tagCounts: { [key: string]: number } = {};
+
+        postsSnapshot.docs.forEach((doc) => {
+          const postTags: string[] = doc.data().tags;
+          postTags.forEach((tag) => {
+            tagCounts[tag] = (tagCounts[tag] || 0) + 1;
+          });
+        });
+
+        const sortedTags = Object.keys(tagCounts).sort(
+          (a, b) => tagCounts[b] - tagCounts[a]
+        );
+        setPopularTags(sortedTags);
+      } catch (error) {
+        console.error("Error getting popular tags:", error);
+      }
+    };
+
     fetchBlogPost();
+    fetchPopularCategory();
+    fetchPopularTags();
   }, [id]);
 
   if (!blogPost) {
@@ -97,6 +185,11 @@ const BlogSidebarPage = () => {
 
                     </a>
                   </div>
+                  {blogPost.coverImage && (
+                    <div className="mb-5">
+                      <img src={blogPost.coverImage} alt="Cover Image" className="w-full h-auto" />
+                    </div>
+                  )}
                 </div>
                 <div>
 
@@ -110,7 +203,7 @@ const BlogSidebarPage = () => {
                   <div className="items-center justify-between sm:flex">
                     <div className="mb-5">
                       <h4 className="mb-3 text-sm font-medium text-body-color">
-                        Popular Tags :
+                        Tags :
                       </h4>
                       <div className="flex items-center">
                         {blogPost.tags.map((tag, index) => (
@@ -136,10 +229,13 @@ const BlogSidebarPage = () => {
                   <input
                     type="text"
                     placeholder="Search here..."
+                    value={searchQuery}
+                    onChange={handleSearchChange}
                     className="border-stroke dark:text-body-color-dark dark:shadow-two mr-4 w-full rounded-sm border bg-[#f8f8f8] px-6 py-3 text-base text-body-color outline-none transition-all duration-300 focus:border-primary dark:border-transparent dark:bg-[#2C303B] dark:focus:border-primary dark:focus:shadow-none"
                   />
                   <button
                     aria-label="search button"
+                    onClick={handleSearch}
                     className="flex h-[50px] w-full max-w-[50px] items-center justify-center rounded-sm bg-primary text-white"
                   >
                     <svg
@@ -157,35 +253,50 @@ const BlogSidebarPage = () => {
                   </button>
                 </div>
               </div>
+
+              <div className="shadow-three dark:bg-gray-dark mb-10 rounded-sm bg-white dark:shadow-none">
+                <h3 className="border-b border-body-color border-opacity-10 px-8 py-4 text-lg font-semibold text-black dark:border-white dark:border-opacity-10 dark:text-white">
+                  Search Result
+                </h3>
+                <ul className="p-8">
+                  {searchQuery.trim() !== '' && searchResults.length > 0 ? (
+                    searchResults.map((post) => (
+                      <div key={post.id}>
+                        <li className="mb-6 border-b border-body-color border-opacity-10 pb-6 dark:border-white dark:border-opacity-10">
+                          <RelatedPost
+                            title={post.title}
+                            image={post.coverImage}
+                            slug={`?id=${post.id}`}
+                            date={post.createdAt}
+                          />
+                        </li>
+                      </div>
+                    ))
+                  ) : (
+                    searchQuery.trim() !== '' && (
+                      <div className="text-center text-gray-500 dark:text-gray-400">
+                        No results found.
+                      </div>
+                    )
+                  )}
+                </ul>
+              </div>
+
               <div className="shadow-three dark:bg-gray-dark mb-10 rounded-sm bg-white dark:shadow-none">
                 <h3 className="border-b border-body-color border-opacity-10 px-8 py-4 text-lg font-semibold text-black dark:border-white dark:border-opacity-10 dark:text-white">
                   Related Posts
                 </h3>
                 <ul className="p-8">
-                  <li className="mb-6 border-b border-body-color border-opacity-10 pb-6 dark:border-white dark:border-opacity-10">
-                    <RelatedPost
-                      title="Best way to boost your online sales."
-                      image="/images/blog/post-01.jpg"
-                      slug="#"
-                      date="12 Feb 2025"
-                    />
-                  </li>
-                  <li className="mb-6 border-b border-body-color border-opacity-10 pb-6 dark:border-white dark:border-opacity-10">
-                    <RelatedPost
-                      title="50 Best web design tips & tricks that will help you."
-                      image="/images/blog/post-02.jpg"
-                      slug="#"
-                      date="15 Feb, 2024"
-                    />
-                  </li>
-                  <li>
-                    <RelatedPost
-                      title="The 8 best landing page builders, reviewed"
-                      image="/images/blog/post-03.jpg"
-                      slug="#"
-                      date="05 Jun, 2024"
-                    />
-                  </li>
+                  {relatedPosts.slice(0, 3).map(post => (
+                    <li className="mb-6 border-b border-body-color border-opacity-10 pb-6 dark:border-white dark:border-opacity-10">
+                      <RelatedPost
+                        title={post.title}
+                        image={post.coverImage}
+                        slug={`?id=${post.id}`}
+                        date={post.createdAt}
+                      />
+                    </li>
+                  ))}
                 </ul>
               </div>
               <div className="shadow-three dark:bg-gray-dark mb-10 rounded-sm bg-white dark:shadow-none">
@@ -193,46 +304,16 @@ const BlogSidebarPage = () => {
                   Popular Category
                 </h3>
                 <ul className="px-8 py-6">
-                  <li>
-                    <a
-                      href="#0"
-                      className="mb-3 inline-block text-base font-medium text-body-color hover:text-primary"
-                    >
-                      Tailwind Templates
-                    </a>
-                  </li>
-                  <li>
-                    <a
-                      href="#0"
-                      className="mb-3 inline-block text-base font-medium text-body-color hover:text-primary"
-                    >
-                      Landing page
-                    </a>
-                  </li>
-                  <li>
-                    <a
-                      href="#0"
-                      className="mb-3 inline-block text-base font-medium text-body-color hover:text-primary"
-                    >
-                      Startup
-                    </a>
-                  </li>
-                  <li>
-                    <a
-                      href="#0"
-                      className="mb-3 inline-block text-base font-medium text-body-color hover:text-primary"
-                    >
-                      Business
-                    </a>
-                  </li>
-                  <li>
-                    <a
-                      href="#0"
-                      className="mb-3 inline-block text-base font-medium text-body-color hover:text-primary"
-                    >
-                      Multipurpose
-                    </a>
-                  </li>
+                  {popularCategory.slice(0, 5).map((category, index) => (
+                    <li key={index}>
+                      <a
+                        href="#0"
+                        className="mb-3 inline-block text-base font-medium text-body-color hover:text-primary"
+                      >
+                        {category}
+                      </a>
+                    </li>
+                  ))}
                 </ul>
               </div>
               <div className="shadow-three dark:bg-gray-dark mb-10 rounded-sm bg-white dark:shadow-none">
@@ -240,11 +321,9 @@ const BlogSidebarPage = () => {
                   Popular Tags
                 </h3>
                 <div className="flex flex-wrap px-8 py-6">
-                  <TagButton text="Themes" />
-                  <TagButton text="UI Kit" />
-                  <TagButton text="Tailwind" />
-                  <TagButton text="Startup" />
-                  <TagButton text="Business" />
+                  {popularTags.slice(0, 10).map((tag, index) => (
+                    <TagButton key={index} text={tag} />
+                  ))}
                 </div>
               </div>
 

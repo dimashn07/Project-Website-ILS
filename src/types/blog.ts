@@ -6,4 +6,6 @@ export type BlogType = {
   tags: string[];
   publishDate: string;
   category: string;
+  coverImage?: string;
+  submenu: string;
 };
