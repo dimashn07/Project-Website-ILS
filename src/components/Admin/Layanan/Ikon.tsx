@@ -2,15 +2,15 @@ import { useRouter, usePathname } from "next/navigation";
 import { FaUser } from "react-icons/fa";
 // import { Tooltip } from 'react-tooltip';
 
-export default function Layanan() {
+export default function LayananAdmin() {
     const router = useRouter();
     const pathname = usePathname();
 
     const navigateToService = () => {
-        router.push('/layanan');
+        router.push('/admin/layanan');
     };
 
-    const isLayananPage = pathname === '/layanan';
+    const isLayananPage = pathname === '/admin/layanan';
 
     if (isLayananPage) {
         return null;
@@ -33,7 +33,7 @@ export default function Layanan() {
             {/* <Tooltip
                 id="user-service-tooltip"
                 style={{ backgroundColor: "#A3DA22", color: "#222" }}
-            />  */}
+            /> */}
         </>
     );
 }

@@ -1,18 +1,11 @@
 'use client';
-
-import AdminLayout from "./layout";
 import { useEffect } from 'react';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import Breadcrumb from "@/components/Common/Breadcrumb";
-import SejarahPage from "./sejarah/page";
-import VisiMisiPage from "./visi-misi/page";
-import KontribusiPage from "./kontribusi/page";
-import StrukturOrganisasiPage from "./struktur-organisasi/page";
-import ProgramPage from "./program/page";
-import ModalPage from "./modal/page";
-import VideoProfilPage from "./video-profil/page";
-import KerjasamaPage from "./kerjasama/page";
+import AdminLayout from '../layout';
+import KerjasamaPage from '../kerjasama/page';
+import SebaranWilayahPage from '../sebaran-wilayah/page';
 
 export default function Home() {
 
@@ -37,17 +30,10 @@ export default function Home() {
     <>
       <AdminLayout>
         <Breadcrumb
-          pageName="Beranda"
+          pageName="Pelaksana"
           description="Lembaga Inisiatif Lampung Sehat"
         />
-        
-        <ModalPage />
-        <ProgramPage />
-        <KontribusiPage />
-        <VideoProfilPage />
-        <SejarahPage />
-        <VisiMisiPage />
-        <StrukturOrganisasiPage />
+        <SebaranWilayahPage />
         <KerjasamaPage />
       </AdminLayout>
     </>
