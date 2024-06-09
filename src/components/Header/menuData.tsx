@@ -52,6 +52,12 @@ const menuData: Menu[] = [
       },
     ],
   },
+  /*{
+    id: 4,
+    title: "Berita",
+    path: "/blog",
+    newTab: false,
+  },*/
   {
     id: 4,
     title: "Berita",
@@ -60,19 +66,25 @@ const menuData: Menu[] = [
       {
         id: 41,
         title: "Eliminasi TB",
-        path: "/blog",
+        path: "/blog-etb",
         newTab: false,
       },
       {
         id: 42,
         title: "UMKM",
-        path: "/blog",
+        path: "/blog-umkm",
         newTab: false,
       },
       {
         id: 43,
         title: "Layanan Kesehatan Publik",
-        path: "/blog",
+        path: "/blog-lkp",
+        newTab: false,
+      },
+      {
+        id: 44,
+        title: "Berita Lainnya",
+        path: "/blog-bl",
         newTab: false,
       },
     ],

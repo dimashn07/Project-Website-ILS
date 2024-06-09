@@ -1,7 +1,6 @@
 import { doc, getDoc, setDoc, increment } from 'firebase/firestore';
 import { getFirestore } from "firebase/firestore";
-import firebase_app from "@/app/firebaseConfig";
-const db = getFirestore(firebase_app);
+import { db } from "@/app/firebaseConfig";
 
 const getNextId = async () => {
   const idDocRef = doc(db, 'blogPostMeta', 'highestId');

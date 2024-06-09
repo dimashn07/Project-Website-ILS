@@ -14,6 +14,7 @@ interface blogList {
   tags: string[];
   createdAt?: string;
   category: string;
+  coverImage?: string;
 }
 
 const SingleBlog = ({ blog }: { blog: BlogType }) => {
@@ -27,8 +28,8 @@ const SingleBlog = ({ blog }: { blog: BlogType }) => {
         if (docSnap.exists()) {
           const data = docSnap.data();
           if (data) {
-            const { title, content, tags, createdAt, category, image } = data;
-            setBlogData({ title, content, tags, createdAt, category, id: blog.id, image });
+            const { title, content, tags, createdAt, category, image, coverImage } = data;
+            setBlogData({ title, content, tags, createdAt, category, id: blog.id, image, coverImage });
           }
         } else {
           console.log("No such document!");
@@ -49,7 +50,7 @@ const SingleBlog = ({ blog }: { blog: BlogType }) => {
     return null; 
   }
 
-  const { title, content, createdAt, category, tags, image } = blogData;
+  const { title, content, createdAt, category, tags, image, coverImage } = blogData;
 
   const stripImages = (htmlContent: string) => {
     return htmlContent.replace(/<img[^>]*>/g, '');
@@ -64,7 +65,7 @@ const SingleBlog = ({ blog }: { blog: BlogType }) => {
           <span className="absolute right-6 top-6 z-20 inline-flex items-center justify-center rounded-full bg-primary px-4 py-2 text-sm font-semibold capitalize text-white">
             {category}
           </span>
-          {image && <img src={image} alt={title} className="object-cover w-full h-48" />}
+          {coverImage && <img src={coverImage} alt={title} className="object-cover w-full h-48" />}
         </Link>
         <div className="flex flex-col flex-grow p-6 sm:p-8 md:px-6 md:py-8 lg:p-8 xl:px-5 xl:py-8 2xl:p-8">
           <h3>
