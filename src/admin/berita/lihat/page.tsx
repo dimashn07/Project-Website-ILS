@@ -9,60 +9,76 @@ import { useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation'
 import { doc, getDoc, query, where, getDocs, collection } from "firebase/firestore";
 import { db } from '@/app/firebaseConfig';
+import AdminLayout from "../../layout";
+
 
 interface BlogPost {
   id: string;
   title: string;
   content: string;
+  contentImage: string;
   tags: string[];
   category: string;
-  createdAt: string;
+  city: string;
+  publishedDate: string;
   coverImage: string;
 }
 
-const BlogSidebarPage = () => {
+const BlogDetailPage = () => {
   const [relatedPosts, setRelatedPosts] = useState<BlogPost[]>([]);
-  const [popularCategory, setPopularCategory] = useState([]);
   const [popularTags, setPopularTags] = useState<string[]>([]);
-  const [blogPost, setBlogPost] = useState<BlogPost | null>(null);
+  const [popularCity, setPopularCity] = useState<string[]>([]);
+  const [berita, setBerita] = useState<BlogPost | null>(null);
   const searchParams = useSearchParams();
   const id = searchParams?.get('id');
-
+  
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState<BlogPost[]>([]);
-
-  const handleSearchChange = (event) => {
+  
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(event.target.value);
   };
-
+  
   const handleSearch = async () => {
     try {
       const searchKeywords = searchQuery.toLowerCase().split(" ").filter((word) => word !== "");
       if (searchKeywords.length === 0) return;
-
+  
       const q = query(
-        collection(db, "blogPosts"),
+        collection(db, "berita"),
         where("titleKeywords", "array-contains-any", searchKeywords)
       );
       const querySnapshot = await getDocs(q);
-      const results = querySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
+      const results = querySnapshot.docs.map((doc) => {
+        const data = doc.data();
+        return {
+          id: doc.id,
+          title: data.title,
+          content: data.content,
+          contentImage: data.contentImage,
+          tags: data.tags,
+          category: data.category,
+          city: data.city,
+          publishedDate: data.publishedDate,
+          coverImage: data.coverImage,
+        } as BlogPost;
+      });
       setSearchResults(results);
     } catch (error) {
       console.error("Error searching posts:", error);
     }
   };
-
-
+  
   useEffect(() => {
-    const fetchBlogPost = async () => {
+    const fetchBerita = async () => {
       if (id) {
         try {
-          const docRef = doc(db, 'blogPosts', id);
+          const docRef = doc(db, 'berita', id);
           const docSnap = await getDoc(docRef);
           if (docSnap.exists()) {
             const data = docSnap.data();
-            setBlogPost({ ...data, id });
-
+            setBerita({ ...data, id } as BlogPost);
+  
             fetchRelatedPosts(data.category, data.tags);
           } else {
             console.log("No such document!");
@@ -72,56 +88,70 @@ const BlogSidebarPage = () => {
         }
       }
     };
-
-    const fetchRelatedPosts = async (category, tags) => {
+  
+    const fetchRelatedPosts = async (category: string, tags: string[]) => {
       try {
         const q = query(
-          collection(db, 'blogPosts'),
+          collection(db, 'berita'),
           where('category', '==', category),
           where('tags', 'array-contains-any', tags)
         );
         const querySnapshot = await getDocs(q);
         const relatedPostsData = querySnapshot.docs
-          .map(doc => ({ ...doc.data(), id: doc.id }))
+          .map(doc => {
+            const data = doc.data();
+            return {
+              id: doc.id,
+              title: data.title,
+              content: data.content,
+              contentImage: data.contentImage,
+              tags: data.tags,
+              category: data.category,
+              city: data.city,
+              publishedDate: data.publishedDate,
+              coverImage: data.coverImage,
+            } as BlogPost;
+          })
           .filter((post) => post.id !== id);
         setRelatedPosts(relatedPostsData);
       } catch (error) {
         console.error("Error getting related posts:", error);
       }
     };
-
-    const fetchPopularCategory = async () => {
+  
+    const fetchPopularCity = async () => {
       try {
-        const categoryCollection = collection(db, 'blogPosts');
-        const categorySnapshot = await getDocs(categoryCollection);
-        const categoryCounts: { [key: string]: number } = {};
-
-        categorySnapshot.docs.forEach(doc => {
-          const category = doc.data().category;
-          if (category) {
-            categoryCounts[category] = (categoryCounts[category] || 0) + 1;
-          }
+        const postsSnapshot = await getDocs(collection(db, 'berita'));
+        const cityCounts: { [key: string]: number } = {};
+  
+        postsSnapshot.docs.forEach((doc) => {
+          const postCities: string[] = doc.data().cities;
+          postCities.forEach((city) => {
+            cityCounts[city] = (cityCounts[city] || 0) + 1;
+          });
         });
-
-        const sortedCategories = Object.keys(categoryCounts).sort((a, b) => categoryCounts[b] - categoryCounts[a]);
-        setPopularCategory(sortedCategories);
+  
+        const sortedCities = Object.keys(cityCounts).sort(
+          (a, b) => cityCounts[b] - cityCounts[a]
+        );
+        setPopularCity(sortedCities);
       } catch (error) {
-        console.error("Error getting popular categories:", error);
+        console.error("Error getting popular cities:", error);
       }
     };
-
+  
     const fetchPopularTags = async () => {
       try {
-        const postsSnapshot = await getDocs(collection(db, 'blogPosts'));
+        const postsSnapshot = await getDocs(collection(db, 'berita'));
         const tagCounts: { [key: string]: number } = {};
-
+  
         postsSnapshot.docs.forEach((doc) => {
           const postTags: string[] = doc.data().tags;
           postTags.forEach((tag) => {
             tagCounts[tag] = (tagCounts[tag] || 0) + 1;
           });
         });
-
+  
         const sortedTags = Object.keys(tagCounts).sort(
           (a, b) => tagCounts[b] - tagCounts[a]
         );
@@ -130,25 +160,26 @@ const BlogSidebarPage = () => {
         console.error("Error getting popular tags:", error);
       }
     };
-
-    fetchBlogPost();
-    fetchPopularCategory();
+  
+    fetchBerita();
     fetchPopularTags();
+    fetchPopularCity();
   }, [id]);
-
-  if (!blogPost) {
+  
+  if (!berita) {
     return <div>Loading...</div>;
   }
 
   return (
     <>
+    <AdminLayout>
       <section className="overflow-hidden pb-[120px] pt-[180px]">
         <div className="container">
           <div className="-mx-4 flex flex-wrap">
             <div className="w-full px-4 lg:w-8/12">
               <div>
                 <h1 className="mb-8 text-3xl font-bold leading-tight text-black dark:text-white sm:text-4xl sm:leading-tight">
-                  {blogPost.title}
+                  {berita.title}
                 </h1>
                 <div className="mb-10 flex flex-wrap items-center justify-between border-b border-body-color border-opacity-10 pb-4 dark:border-white dark:border-opacity-10">
                   <div className="flex flex-wrap items-center">
@@ -172,22 +203,29 @@ const BlogSidebarPage = () => {
                             <path d="M13.2637 3.3697H7.64754V2.58105C8.19721 2.43765 8.62738 1.91189 8.62738 1.31442C8.62738 0.597464 8.02992 0 7.28906 0C6.54821 0 5.95074 0.597464 5.95074 1.31442C5.95074 1.91189 6.35702 2.41376 6.93058 2.58105V3.3697H1.31442C0.597464 3.3697 0 3.96716 0 4.68412V13.2637C0 13.9807 0.597464 14.5781 1.31442 14.5781H13.2637C13.9807 14.5781 14.5781 13.9807 14.5781 13.2637V4.68412C14.5781 3.96716 13.9807 3.3697 13.2637 3.3697ZM6.6677 1.31442C6.6677 0.979841 6.93058 0.716957 7.28906 0.716957C7.62364 0.716957 7.91042 0.979841 7.91042 1.31442C7.91042 1.649 7.64754 1.91189 7.28906 1.91189C6.95448 1.91189 6.6677 1.6251 6.6677 1.31442ZM1.31442 4.08665H13.2637C13.5983 4.08665 13.8612 4.34954 13.8612 4.68412V6.45261H0.716957V4.68412C0.716957 4.34954 0.979841 4.08665 1.31442 4.08665ZM13.2637 13.8612H1.31442C0.979841 13.8612 0.716957 13.5983 0.716957 13.2637V7.16957H13.8612V13.2637C13.8612 13.5983 13.5983 13.8612 13.2637 13.8612Z" />
                           </svg>
                         </span>
-                        {blogPost.createdAt}
+                        {berita.publishedDate}
                       </p>
                     </div>
                   </div>
                   <div className="mb-5">
                     <a
                       href="#0"
+                      className="inline-flex items-center justify-center mr-4 rounded-full bg-primary px-4 py-2 text-sm font-semibold text-white"
+                    >
+                      {berita.category}
+
+                    </a>
+                    <a
+                      href="#0"
                       className="inline-flex items-center justify-center rounded-full bg-primary px-4 py-2 text-sm font-semibold text-white"
                     >
-                      {blogPost.category}
+                      {berita.city}
 
                     </a>
                   </div>
-                  {blogPost.coverImage && (
+                  {berita.coverImage && (
                     <div className="mb-5">
-                      <img src={blogPost.coverImage} alt="Cover Image" className="w-full h-auto" />
+                      <img src={berita.coverImage} alt="Cover Image" className="w-full h-auto" />
                     </div>
                   )}
                 </div>
@@ -195,7 +233,7 @@ const BlogSidebarPage = () => {
 
                   <p className="mb-8 text-base font-medium leading-relaxed text-body-color sm:text-lg sm:leading-relaxed lg:text-base lg:leading-relaxed xl:text-lg xl:leading-relaxed">
                     <div
-                      dangerouslySetInnerHTML={{ __html: blogPost.content }}
+                      dangerouslySetInnerHTML={{ __html: berita.content }}
                       className="prose dark:prose-dark"
                     />
                   </p>
@@ -206,19 +244,19 @@ const BlogSidebarPage = () => {
                         Tags :
                       </h4>
                       <div className="flex items-center">
-                        {blogPost.tags.map((tag, index) => (
+                        {berita.tags.map((tag, index) => (
                           <TagButton key={index} text={tag} />
                         ))}
                       </div>
                     </div>
-                    <div className="mb-5">
+                    {/* <div className="mb-5">
                       <h5 className="mb-3 text-sm font-medium text-body-color sm:text-right">
-                        Share this post :
+                        Bagikan postingan :
                       </h5>
                       <div className="flex items-center sm:justify-end">
                         <SharePost />
                       </div>
-                    </div>
+                    </div> */}
                   </div>
                 </div>
               </div>
@@ -228,7 +266,7 @@ const BlogSidebarPage = () => {
                 <div className="flex items-center justify-between">
                   <input
                     type="text"
-                    placeholder="Search here..."
+                    placeholder="Cari"
                     value={searchQuery}
                     onChange={handleSearchChange}
                     className="border-stroke dark:text-body-color-dark dark:shadow-two mr-4 w-full rounded-sm border bg-[#f8f8f8] px-6 py-3 text-base text-body-color outline-none transition-all duration-300 focus:border-primary dark:border-transparent dark:bg-[#2C303B] dark:focus:border-primary dark:focus:shadow-none"
@@ -256,7 +294,7 @@ const BlogSidebarPage = () => {
 
               <div className="shadow-three dark:bg-gray-dark mb-10 rounded-sm bg-white dark:shadow-none">
                 <h3 className="border-b border-body-color border-opacity-10 px-8 py-4 text-lg font-semibold text-black dark:border-white dark:border-opacity-10 dark:text-white">
-                  Search Result
+                  Hasil Pencarian
                 </h3>
                 <ul className="p-8">
                   {searchQuery.trim() !== '' && searchResults.length > 0 ? (
@@ -267,7 +305,7 @@ const BlogSidebarPage = () => {
                             title={post.title}
                             image={post.coverImage}
                             slug={`?id=${post.id}`}
-                            date={post.createdAt}
+                            date={post.publishedDate}
                           />
                         </li>
                       </div>
@@ -275,7 +313,7 @@ const BlogSidebarPage = () => {
                   ) : (
                     searchQuery.trim() !== '' && (
                       <div className="text-center text-gray-500 dark:text-gray-400">
-                        No results found.
+                        Hasil tidak ditemukan.
                       </div>
                     )
                   )}
@@ -284,7 +322,7 @@ const BlogSidebarPage = () => {
 
               <div className="shadow-three dark:bg-gray-dark mb-10 rounded-sm bg-white dark:shadow-none">
                 <h3 className="border-b border-body-color border-opacity-10 px-8 py-4 text-lg font-semibold text-black dark:border-white dark:border-opacity-10 dark:text-white">
-                  Related Posts
+                  Postingan Terkait
                 </h3>
                 <ul className="p-8">
                   {relatedPosts.slice(0, 3).map(post => (
@@ -293,7 +331,7 @@ const BlogSidebarPage = () => {
                         title={post.title}
                         image={post.coverImage}
                         slug={`?id=${post.id}`}
-                        date={post.createdAt}
+                        date={post.publishedDate}
                       />
                     </li>
                   ))}
@@ -301,16 +339,16 @@ const BlogSidebarPage = () => {
               </div>
               <div className="shadow-three dark:bg-gray-dark mb-10 rounded-sm bg-white dark:shadow-none">
                 <h3 className="border-b border-body-color border-opacity-10 px-8 py-4 text-lg font-semibold text-black dark:border-white dark:border-opacity-10 dark:text-white">
-                  Popular Category
+                  Wilayah Populer
                 </h3>
                 <ul className="px-8 py-6">
-                  {popularCategory.slice(0, 5).map((category, index) => (
+                  {popularCity.slice(0, 5).map((city, index) => (
                     <li key={index}>
                       <a
                         href="#0"
                         className="mb-3 inline-block text-base font-medium text-body-color hover:text-primary"
                       >
-                        {category}
+                        {city}
                       </a>
                     </li>
                   ))}
@@ -318,7 +356,7 @@ const BlogSidebarPage = () => {
               </div>
               <div className="shadow-three dark:bg-gray-dark mb-10 rounded-sm bg-white dark:shadow-none">
                 <h3 className="border-b border-body-color border-opacity-10 px-8 py-4 text-lg font-semibold text-black dark:border-white dark:border-opacity-10 dark:text-white">
-                  Popular Tags
+                  Tag Populer
                 </h3>
                 <div className="flex flex-wrap px-8 py-6">
                   {popularTags.slice(0, 10).map((tag, index) => (
@@ -331,8 +369,9 @@ const BlogSidebarPage = () => {
           </div>
         </div>
       </section>
+    </AdminLayout>
     </>
   );
 };
 
-export default BlogSidebarPage;
+export default BlogDetailPage;

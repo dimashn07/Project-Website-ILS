@@ -11,7 +11,7 @@ const SejarahPage = () => {
     useEffect(() => {
       const q = query(collection(db, 'sejarah'), orderBy('paragraf', 'asc'));
       const unsubscribe = onSnapshot(q, (querySnapshot) => {
-        let sejarahArr: { id: string }[] = [];
+        let sejarahArr: { id: string }[] = []; // Define the type annotation correctly
     
         querySnapshot.forEach((doc) => {
           sejarahArr.push({...doc.data(), id: doc.id})
@@ -24,6 +24,7 @@ const SejarahPage = () => {
         unsubscribe();
       };
     }, []);
+    
 
     return (
       <>

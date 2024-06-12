@@ -1,53 +1,38 @@
-'use client'
-import Link from 'next/link';
+// 'use client'
 import React, { useEffect, useState } from 'react';
-import { collection, getDocs, query } from 'firebase/firestore';
+import { useSession } from 'next-auth/react';
+import { DocumentData, QueryDocumentSnapshot, collection, onSnapshot, query } from 'firebase/firestore';
 import { db } from '@/app/firebaseConfig';
 import { useRouter } from 'next/navigation';
 
 const SingleBerita = ({ berita }) => {
-    const [blogContent, setBlogContent] = useState<BlogContent[]>([]);
+    const [beritaData, setBeritaData] = useState<{ [key: string]: any }[]>([]);
+    const { data: session } = useSession();
     const router = useRouter();
 
-    interface BlogContent {
-        id: string;
-        title: string;
-        content: string;
-        contentImage: string;
-        category: string;
-        city: string;
-        tags: string[];
-        coverImage: string;
-        publishedDate: string;
-    }
-
     useEffect(() => {
-        const fetchData = async () => {
-            const beritaCollection = collection(db, 'berita');
-            const querySnapshot = await getDocs(query(beritaCollection));
-            let fetchedContent: BlogContent[] = [];
-            querySnapshot.forEach((doc) => {
-                const beritaData = doc.data();
-                fetchedContent.push({
-                    id: doc.id, 
-                    title: beritaData.title,
-                    content: beritaData.content,
-                    contentImage: beritaData.contentImage,
-                    category: beritaData.category,
-                    city: beritaData.city,
-                    tags: beritaData.tags,
-                    coverImage: beritaData.coverImage,
-                    publishedDate: beritaData.publishedDate,
-                });
+        if (session) {
+          const q = query(collection(db, 'berita'));
+          const unsubscribe = onSnapshot(q, (querySnapshot) => {
+            const blogs: { id: string, categories: string, cities: string, tags: string[] }[] = []; 
+      
+            querySnapshot.forEach((doc: QueryDocumentSnapshot<DocumentData>) => {
+                const blogData = doc.data();
+                blogs.push({...blogData, id: doc.id, categories: blogData.category, cities: blogData.city, tags: blogData.tags });
             });
-            setBlogContent(fetchedContent);
-        };
+        
+            const sortedBlogs = blogs.sort((a, b) => b.id.localeCompare(a.id));
+            setBeritaData(sortedBlogs);
+            });
+            
+            return () => {
+            unsubscribe();
+          };
+        }
+      }, [session]);
 
-        fetchData();
-    }, []);
-
-    const handleLihatClick = (selectedBerita) => {
-        router.push(`/berita/lihat?id=${selectedBerita.id}`);
+      const handleLihatClick = (selectedBerita) => {
+        router.push(`berita/lihat?id=${selectedBerita.id}`);
     };
 
     const stripHtmlTags = (html) => {
@@ -55,7 +40,6 @@ const SingleBerita = ({ berita }) => {
         div.innerHTML = html;
         return div.textContent || div.innerText || '';
     };
-      
 
     return (
         <div className="group relative flex flex-col overflow-hidden rounded-sm bg-white shadow-one duration-300 hover:shadow-two dark:bg-dark dark:hover:shadow-gray-dark h-full">
@@ -102,6 +86,5 @@ const SingleBerita = ({ berita }) => {
         </div>
     );
 };
-
 
 export default SingleBerita;

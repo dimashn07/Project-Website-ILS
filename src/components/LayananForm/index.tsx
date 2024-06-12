@@ -1,6 +1,17 @@
-import React from 'react';
+'use client'
+import React, { useState } from 'react';
 
 const LayananForm = ({ handleSimpanClick, nama, setNama, jenisKelamin, setJenisKelamin, email, setEmail, whatsapp, setWhatsapp, jenisLayanan, setJenisLayanan, keterangan, setKeterangan }) => {
+  const [result, setResult] = useState<Record<string, string>>({});
+  const sendEmail = () => {
+    fetch('api/emails', {
+      method: 'POST' 
+    })
+    .then(response => response.json())
+    .then(data => setResult(data))
+    .catch(error => setResult(error))
+  }
+  
   return (
     <section id="contact" className="overflow-hidden py-4 md:py-6 lg:py-8 pb-20">
       <div className="container flex justify-center">
@@ -150,7 +161,7 @@ const LayananForm = ({ handleSimpanClick, nama, setNama, jenisKelamin, setJenisK
                     </div>
                   </div>
                   <div className="w-full px-4 flex justify-end">
-                    <button type="submit" className="rounded-sm bg-primary px-9 py-4 text-base font-medium text-white shadow-submit duration-300 hover:bg-primary/90 dark:shadow-submit-dark">
+                    <button type="submit" onClick={sendEmail} className="rounded-sm bg-primary px-9 py-4 text-base font-medium text-white shadow-submit duration-300 hover:bg-primary/90 dark:shadow-submit-dark">
                       Kirim
                     </button>
                   </div>
