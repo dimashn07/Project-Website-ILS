@@ -1,6 +1,6 @@
 import PartnershipMenu from "./brandsData";
 
-const Brands = () => {
+const Kerjasama = () => {
   return (
     <section className="pt-16">
       <div className="container">
@@ -21,4 +21,4 @@ const Brands = () => {
   );
 };
 
-export default Brands;
+export default Kerjasama;

@@ -52,12 +52,6 @@ const menuData: Menu[] = [
       },
     ],
   },
-  /*{
-    id: 4,
-    title: "Berita",
-    path: "/blog",
-    newTab: false,
-  },*/
   {
     id: 4,
     title: "Berita",
@@ -66,25 +60,19 @@ const menuData: Menu[] = [
       {
         id: 41,
         title: "Eliminasi TB",
-        path: "/blog-etb",
+        path: "/berita/eliminasi-tb",
         newTab: false,
       },
       {
         id: 42,
         title: "UMKM",
-        path: "/blog-umkm",
+        path: "/berita/umkm",
         newTab: false,
       },
       {
         id: 43,
         title: "Layanan Kesehatan Publik",
-        path: "/blog-lkp",
-        newTab: false,
-      },
-      {
-        id: 44,
-        title: "Berita Lainnya",
-        path: "/blog-bl",
+        path: "/berita/layanan-kesehatan-publik",
         newTab: false,
       },
     ],

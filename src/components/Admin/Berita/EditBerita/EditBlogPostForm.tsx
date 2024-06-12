@@ -7,7 +7,7 @@ import 'froala-editor/css/froala_style.min.css';
 import 'froala-editor/js/plugins.pkgd.min.js';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import { db } from '@/app/firebaseConfig';
-import uploadImageToFirebase from '../AddBlog/uploadImage';
+// import uploadImageToFirebase from '../AddBlog/uploadImage';
 
 const EditBlogPostForm = ({ id }) => {
     const [title, setTitle] = useState('');
