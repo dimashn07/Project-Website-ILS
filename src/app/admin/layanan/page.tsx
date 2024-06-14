@@ -1,7 +1,7 @@
 'use client'
 import Breadcrumb from "@/components/Common/Breadcrumb";
 import AdminLayout from "../layout";
-import { editStatus, getLayanan } from "@/controller/layanan";
+import { getLayanan } from "@/controller/layanan";
 import { useSession } from "next-auth/react";
 import LayananModal from "@/components/Admin/Layanan/Modal";
 import { useEffect, useState } from "react";
@@ -50,6 +50,9 @@ const LayananTable = () => {
                 Status
               </th>
               <th scope="col" className="px-6 py-3 w-1/5"> 
+                Terakhir Diperbarui
+              </th>
+              <th scope="col" className="px-6 py-3 w-1/5"> 
                 Detail
               </th>
             </tr>
@@ -67,12 +70,15 @@ const LayananTable = () => {
                   {item.jenisLayanan}
                 </td>
                 <td className="px-6 py-4">
-                  {item.timestamp?.toDate().toLocaleDateString()}
+                  {item.publishedDate}
                 </td>
                 <td className="px-6 py-4">
                   <div className={`inline-block px-3 py-1 rounded-md ${item.status === 'Ditanggapi' ? 'bg-green-500 text-white dark:bg-green-400 dark:text-gray-900' : 'bg-red-500 text-white dark:bg-red-400 dark:text-gray-900'}`}>
                     {item.status}
                   </div>
+                </td>
+                <td className="px-6 py-4">
+                  {item.timestamp?.toDate().toLocaleDateString()}<br />{item.author}
                 </td>
                 <td className="px-6 py-4">
                   <LayananModal layananItem={item} />

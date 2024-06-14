@@ -140,7 +140,7 @@ const LayananForm = ({ handleSimpanClick, nama, setNama, jenisKelamin, setJenisK
                           <option key={wilayah.id} value={wilayah.wilayah}>{wilayah.wilayah}</option>
                         ))}
                       </select>
-                      <div className="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
+                      {/* <div className="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
                           <svg
                             className="w-5 h-5 text-gray-400 dark:text-gray-300"
                             fill="none"
@@ -152,7 +152,7 @@ const LayananForm = ({ handleSimpanClick, nama, setNama, jenisKelamin, setJenisK
                           >
                             <path d="M9 5l7 7-7 7"></path>
                           </svg>
-                        </div>
+                        </div> */}
                     </div>
                   </div>
                   <div className="w-full px-4 md:w-1/2">

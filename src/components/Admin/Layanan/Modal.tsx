@@ -156,6 +156,38 @@ export default function LayananModal({ layananItem }) {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                       <label
+                        htmlFor="kabupaten"
+                        className="mb-2 block text-sm font-medium text-dark dark:text-white"
+                      >
+                        Kota/Kabupaten
+                      </label>
+                      <div className="relative">
+                        <input
+                          type="text" id="kabupaten" name="kabupaten" readOnly
+                          value={selectedLayanan?.kabupaten || ''}
+                          className="border-stroke w-full rounded-sm border bg-[#f8f8f8] px-4 py-2 text-base text-body-color outline-none focus:border-primary dark:border-transparent dark:bg-[#2C303B] dark:text-body-color-dark dark:shadow-two dark:focus:border-primary dark:focus:shadow-none"
+                        />
+                      </div>
+                    </div>
+                    <div>
+                      <label
+                        htmlFor="puskesmas"
+                        className="mb-2 block text-sm font-medium text-dark dark:text-white"
+                      >
+                        Puskesmas
+                      </label>
+                      <div className="relative">
+                        <input
+                          type="text" id="puskesmas" name="puskesmas" readOnly
+                          value={selectedLayanan?.puskesmas || ''}
+                          className="border-stroke w-full rounded-sm border bg-[#f8f8f8] px-4 py-2 text-base text-body-color outline-none focus:border-primary dark:border-transparent dark:bg-[#2C303B] dark:text-body-color-dark dark:shadow-two dark:focus:border-primary dark:focus:shadow-none"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label
                         htmlFor="email"
                         className="mb-2 block text-sm font-medium text-dark dark:text-white"
                       >
