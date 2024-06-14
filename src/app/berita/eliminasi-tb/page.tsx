@@ -79,7 +79,7 @@ const BlogEliminasiTB = () => {
           
           <div className="mb-8 flex justify-center">
             <div className="mr-4">
-              <label htmlFor="cityDropdown" className="mr-2 text-body-color">City:</label>
+              <label htmlFor="cityDropdown" className="mr-2 text-body-color">Wilayah</label>
               <select
                 id="cityDropdown"
                 value={selectedCity}
@@ -95,7 +95,7 @@ const BlogEliminasiTB = () => {
             </div>
 
             <div>
-              <label htmlFor="tagDropdown" className="mr-2 text-body-color">Tag:</label>
+              <label htmlFor="tagDropdown" className="mr-2 text-body-color">Tag</label>
               <select
                 id="tagDropdown"
                 value={selectedTag}

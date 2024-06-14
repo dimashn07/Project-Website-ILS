@@ -65,7 +65,7 @@ const ProgramPage = () => {
               <th scope="col" className="px-6 py-3 w-1/5">Deskripsi</th>
               <th scope="col" className="px-6 py-3 w-0.5/5">Link Berita</th>
               <th scope="col" className="px-6 py-3 w-0.5/5">Terakhir Diperbarui</th>
-              <th scope="col" className="px-6 py-3 w-0.5/5">Aksi</th>
+              <th scope="col" className="px-6 py-3 w-1/5">Aksi</th>
             </tr>
           </thead>
           <tbody>

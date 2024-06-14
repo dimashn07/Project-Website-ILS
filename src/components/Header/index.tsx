@@ -6,13 +6,15 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import ThemeToggler from "./ThemeToggler";
 import menuData from "./menuData";
+import { collection, onSnapshot, query } from "firebase/firestore";
+import { db } from "@/app/firebaseConfig";
 
 const Header = () => {
   // Navbar toggle
   const [navbarOpen, setNavbarOpen] = useState(false);
   const navbarToggleHandler = () => {
     setNavbarOpen(!navbarOpen);
-  };
+  }; 
 
   // Sticky Navbar
   const [sticky, setSticky] = useState(false);
@@ -39,10 +41,31 @@ const Header = () => {
 
   const usePathName = usePathname();
 
-  // Function to open donation page in new tab
-  const openDonationPage = () => {
-    window.open("https://kitabisa.com/campaign/bantuannutrisitbc", "_blank");
-  };
+  const [donasi, setDonasi] = useState<{ [key: string]: any }[]>([]);
+
+  useEffect(() => {
+    const q = query(collection(db, 'donasi'));
+    const unsubscribe = onSnapshot(q, (querySnapshot) => {
+      let donasiArr: { id: string }[] = []; 
+  
+      querySnapshot.forEach((doc) => {
+        donasiArr.push({...doc.data(), id: doc.id})
+      });
+  
+      setDonasi(donasiArr);
+    })
+  
+    return () => {
+      unsubscribe();
+    };
+  }, []);
+
+    // Function to open donation page in new tab
+    const openDonationPage = () => {
+      donasi.forEach((item) => {
+        window.open(item.link, "_blank");
+      });
+    };
 
   return (
     <>

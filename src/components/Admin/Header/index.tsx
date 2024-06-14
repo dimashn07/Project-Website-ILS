@@ -1,21 +1,18 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import ThemeToggler from "./ThemeToggler";
 import MenuData from "./MenuData";
-import { useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 
 const AdminHeader = () => {
-
-  // Navbar toggle
   const [navbarOpen, setNavbarOpen] = useState(false);
   const navbarToggleHandler = () => {
     setNavbarOpen(!navbarOpen);
   };
 
-  // Sticky Navbar
   const [sticky, setSticky] = useState(false);
   const handleStickyNavbar = () => {
     if (window.scrollY >= 80) {
@@ -28,7 +25,6 @@ const AdminHeader = () => {
     window.addEventListener("scroll", handleStickyNavbar);
   });
 
-  // submenu handler
   const [openIndex, setOpenIndex] = useState(-1);
   const handleSubmenu = (index) => {
     if (openIndex === index) {
@@ -38,9 +34,15 @@ const AdminHeader = () => {
     }
   };
 
-  const { data: session, status } = useSession();
-
   const usePathName = usePathname();
+
+  const { data: session, status } = useSession();
+  const router = useRouter();
+
+  const handleLogout = async () => {
+    await signOut({ redirect: false }); 
+    router.push('/login');
+  };
 
   return (
     <>
@@ -173,12 +175,12 @@ const AdminHeader = () => {
                     </p>
                   )}
                 </div>
-                <Link
-                  href="/login"
+                <button
+                  onClick={handleLogout}
                   className="ease-in-up shadow-btn hover:shadow-btn-hover hidden rounded-sm bg-primary px-8 py-3 text-base font-medium text-white transition duration-300 hover:bg-opacity-90 md:block md:px-9 lg:px-6 xl:px-9"
                 >
                   Keluar
-                </Link>
+                </button>
                 <div>
                   <ThemeToggler />
                 </div>

@@ -184,7 +184,7 @@ const Blog = () => {
             <button
                 type="button"
                 onClick={handleTambahClick}
-                className="cursor-pointer dark:text-gray-900 dark:bg-white border dark:border-gray-300 dark:focus:outline-none dark:hover:bg-gray-100 dark:focus:ring-4 dark:focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 bg-gray-800 text-white border-gray-600 hover:bg-gray-700 hover:border-gray-600 focus:ring-gray-700"
+                className="cursor-pointer bg-primary border dark:border-gray-300 dark:focus:outline-none dark:hover:bg-gray-100 dark:focus:ring-4 dark:focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 bg-gray-800 text-white border-gray-600 hover:bg-gray-700 hover:border-gray-600 focus:ring-gray-700"
             >
                 Tambah Berita
             </button>
@@ -202,7 +202,6 @@ const Blog = () => {
                     </button>
                     <button
                         className="px-4 py-2 text-white bg-red-500 rounded-lg hover:bg-red-600"
-                        // onClick={() => handleDelete(berita.id, berita.contentImage, berita.coverImage)}
                         onClick={async () => {
                             const isConfirmed = window.confirm('Apakah Anda yakin ingin menghapus data?');
                             if (isConfirmed) {

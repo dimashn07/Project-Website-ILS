@@ -1,17 +1,29 @@
 'use client'
-import React, { useState } from 'react';
+import { db } from '@/app/firebaseConfig';
+import { collection, onSnapshot, orderBy, query } from 'firebase/firestore';
+import React, { useEffect, useState } from 'react';
 
-const LayananForm = ({ handleSimpanClick, nama, setNama, jenisKelamin, setJenisKelamin, email, setEmail, whatsapp, setWhatsapp, jenisLayanan, setJenisLayanan, keterangan, setKeterangan }) => {
-  const [result, setResult] = useState<Record<string, string>>({});
-  const sendEmail = () => {
-    fetch('api/emails', {
-      method: 'POST' 
-    })
-    .then(response => response.json())
-    .then(data => setResult(data))
-    .catch(error => setResult(error))
-  }
+const LayananForm = ({ handleSimpanClick, nama, setNama, jenisKelamin, setJenisKelamin, email, setEmail, whatsapp, setWhatsapp, jenisLayanan, setJenisLayanan, kabupaten, setKabupaten, puskesmas, setPuskesmas, keterangan, setKeterangan }) => {
+
+  const [sebaranWilayah, setSebaranWilayah] = useState<{ [key: string]: any }[]>([]);
+
+  useEffect(() => {
+    const q = query(collection(db, 'sebaranWilayah'), orderBy('urutan', 'asc'));
+    const unsubscribe = onSnapshot(q, (querySnapshot) => {
+      let sebaranWilayahArr: { id: string }[] = []; 
   
+      querySnapshot.forEach((doc) => {
+        sebaranWilayahArr.push({...doc.data(), id: doc.id})
+      });
+  
+      setSebaranWilayah(sebaranWilayahArr);
+    })
+  
+    return () => {
+      unsubscribe();
+    };
+  }, []);
+
   return (
     <section id="contact" className="overflow-hidden py-4 md:py-6 lg:py-8 pb-20">
       <div className="container flex justify-center">
@@ -111,6 +123,56 @@ const LayananForm = ({ handleSimpanClick, nama, setNama, jenisKelamin, setJenisK
                   <div className="w-full px-4 md:w-1/2">
                     <div className="mb-8">
                       <label
+                        htmlFor="kabupaten"
+                        className="mb-3 block text-sm font-medium text-dark dark:text-white"
+                      >
+                        Kabupaten/Kota
+                      </label>
+                      <select
+                        id="kabupaten"
+                        name="kabupaten"
+                        value={kabupaten}
+                        onChange={(e) => setKabupaten(e.target.value)}
+                        className="appearance-none border-stroke w-full rounded-sm border bg-[#f8f8f8] px-6 py-3 text-base text-body-color outline-none focus:border-primary dark:border-transparent dark:bg-[#2C303B] dark:text-body-color-dark dark:shadow-two dark:focus:border-primary dark:focus:shadow-none"
+                      >
+                        <option value="" disabled hidden>Pilih Kabupaten/Kota</option>
+                        {sebaranWilayah.map(wilayah => (
+                          <option key={wilayah.id} value={wilayah.wilayah}>{wilayah.wilayah}</option>
+                        ))}
+                      </select>
+                      <div className="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
+                          <svg
+                            className="w-5 h-5 text-gray-400 dark:text-gray-300"
+                            fill="none"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="2"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                          >
+                            <path d="M9 5l7 7-7 7"></path>
+                          </svg>
+                        </div>
+                    </div>
+                  </div>
+                  <div className="w-full px-4 md:w-1/2">
+                    <div className="mb-8">
+                      <label
+                        htmlFor="puskesmas"
+                        className="mb-3 block text-sm font-medium text-dark dark:text-white"
+                      >
+                        Puskesmas Terdekat
+                      </label>
+                      <input
+                        type="text" id="puskesmas" name="puskesmas" required
+                        value={puskesmas} onChange={(e) => setPuskesmas(e.target.value)} placeholder="Masukan Puskesmas"
+                        className="border-stroke w-full rounded-sm border bg-[#f8f8f8] px-6 py-3 text-base text-body-color outline-none focus:border-primary dark:border-transparent dark:bg-[#2C303B] dark:text-body-color-dark dark:shadow-two dark:focus:border-primary dark:focus:shadow-none"
+                      />
+                    </div>
+                  </div>
+                  <div className="w-full px-4 md:w-1/2">
+                    <div className="mb-8">
+                      <label
                         htmlFor="jenisLayanan"
                         className="mb-3 block text-sm font-medium text-dark dark:text-white"
                       >
@@ -161,7 +223,7 @@ const LayananForm = ({ handleSimpanClick, nama, setNama, jenisKelamin, setJenisK
                     </div>
                   </div>
                   <div className="w-full px-4 flex justify-end">
-                    <button type="submit" onClick={sendEmail} className="rounded-sm bg-primary px-9 py-4 text-base font-medium text-white shadow-submit duration-300 hover:bg-primary/90 dark:shadow-submit-dark">
+                    <button type="submit" onClick={handleSimpanClick} className="rounded-sm bg-primary px-9 py-4 text-base font-medium text-white shadow-submit duration-300 hover:bg-primary/90 dark:shadow-submit-dark">
                       Kirim
                     </button>
                   </div>

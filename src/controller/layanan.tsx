@@ -1,7 +1,7 @@
 import { collection, doc, getDocs, addDoc, deleteDoc, updateDoc, serverTimestamp, query, orderBy, runTransaction, limit} from "firebase/firestore";
 import { db } from "@/app/firebaseConfig";
 
-export async function addLayanan(nama, jenisKelamin, whatsapp, email, jenisLayanan, keterangan){
+export async function addLayanan(nama, jenisKelamin, whatsapp, email, jenisLayanan, kabupaten, puskesmas, keterangan){
     try {
       await runTransaction(db, async(transaction) => {
         const q = query(collection(db, 'layanan'), orderBy('urutan', 'desc'), limit(1));
@@ -21,6 +21,8 @@ export async function addLayanan(nama, jenisKelamin, whatsapp, email, jenisLayan
           whatsapp: whatsapp,
           email: email,
           jenisLayanan: jenisLayanan,
+          kabupaten: kabupaten,
+          puskesmas: puskesmas,
           keterangan: keterangan,
           status: 'Belum Ditanggapi',
           author: '', 
@@ -37,7 +39,7 @@ export async function addLayanan(nama, jenisKelamin, whatsapp, email, jenisLayan
 
 export async function getLayanan(session){
     const layananCollection = collection(db, 'layanan');
-    const querySnapshot = await getDocs(query(layananCollection, orderBy('urutan', 'asc')));
+    const querySnapshot = await getDocs(query(layananCollection, orderBy('timestamp', 'asc')));
     let layananArr: {id: string}[] = [];
     querySnapshot.forEach((doc) => {
         const layananData = doc.data();

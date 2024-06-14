@@ -9,7 +9,7 @@ import '@fortawesome/fontawesome-free/css/all.min.css';
 import addData from "./addData";
 import getNextId from './getNextId';
 import { format } from 'date-fns';
-import uploadImageToFirebase from './uploadImage';
+// import uploadImageToFirebase from './uploadImage';
 
 const CreateBlogPostForm = () => {
   const [title, setTitle] = useState('');

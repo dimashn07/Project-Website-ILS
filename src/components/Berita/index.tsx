@@ -24,7 +24,7 @@ const Blog = () => {
   const [blogPosts, setBlog] = useState<{ [key: string]: BlogType[] }>({});
 
   useEffect(() => {
-    const q = query(collection(db, 'blogPosts'))
+    const q = query(collection(db, 'berita'))
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
       let blogPostsObj: { [key: string]: BlogType[] } = {};
 
@@ -66,15 +66,15 @@ const Blog = () => {
     >
       <div className="container">
         <SectionTitle
-          title="Our Latest Blogs"
-          paragraph="There are many variations of passages of Lorem Ipsum available but the majority have suffered alteration in some form."
+          title="Berita Terbaru"
+          paragraph="Inisiatif Lampung Sehat"
           center
         />
         <div className="grid grid-cols-1 gap-x-8 gap-y-10 md:grid-cols-2 md:gap-x-6 lg:gap-x-8 xl:grid-cols-3">
         {Object.keys(blogPosts).sort((a, b) => parseInt(b) - parseInt(a)).map((id) => (
             <div key={id}>
               {blogPosts[id].map((blog) => (
-                <SingleBlog key={blog.id} blog={blog} />
+                <SingleBlog key={blog.id} berita={blog} />
               ))}
             </div>
           ))}

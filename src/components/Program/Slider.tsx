@@ -65,23 +65,26 @@ const Slider = () => {
   return (
     <main className="grid place-items-center md:grid-cols-2 grid-cols-1 w-full mx-auto max-w-5xl shadow-2xl rounded-3xl overflow-hidden relative">
       <div className="w-full h-full relative overflow-hidden">
+        
         {sliderContent.map((elem, idx) => (
-          <div
-            key={idx}
-            className={`absolute top-0 left-0 w-full h-full transition-transform duration-500 ease-in-out ${
-              idx === activeImage ? "" : "hidden"
-            } ${isZoomed ? "z-10" : ""}`}
-            style={{ transform: isZoomed ? "scale(1.2)" : "scale(1)" }}
-            onMouseEnter={() => setIsZoomed(true)}
-            onMouseLeave={() => setIsZoomed(false)}
-            onClick={() => handleImageClick(idx)}
-          >
-            <img
-              src={elem.src}
-              alt={elem.title}
-              className="w-full h-full object-cover cursor-pointer"
-            />
-          </div>
+          <a href={elem.link}>
+            <div
+              key={idx}
+              className={`absolute top-0 left-0 w-full h-full transition-transform duration-500 ease-in-out ${
+                idx === activeImage ? "" : "hidden"
+              } ${isZoomed ? "z-10" : ""}`}
+              style={{ transform: isZoomed ? "scale(1.2)" : "scale(1)" }}
+              onMouseEnter={() => setIsZoomed(true)}
+              onMouseLeave={() => setIsZoomed(false)}
+              onClick={() => handleImageClick(idx)}
+            >
+              <img
+                src={elem.src}
+                alt={elem.title}
+                className="w-full h-full object-cover cursor-pointer"
+              />
+            </div>
+          </a>
         ))}
       </div>
       <Description

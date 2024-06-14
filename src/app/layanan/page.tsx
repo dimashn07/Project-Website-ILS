@@ -2,6 +2,7 @@
 import Breadcrumb from "@/components/Common/Breadcrumb";
 import LayananForm from "@/components/LayananForm";
 import { addLayanan } from "@/controller/layanan";
+import { sendLayananForm } from "lib/api";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
@@ -11,6 +12,8 @@ const LayananPage = () => {
   const [email, setEmail] = useState('');
   const [whatsapp, setWhatsapp] = useState('');
   const [jenisLayanan, setJenisLayanan] = useState('');
+  const [kabupaten, setKabupaten] = useState('');
+  const [puskesmas, setPuskesmas] = useState('');
   const [keterangan, setKeterangan] = useState('');
 
   const [showPopup, setShowPopup] = useState(false);
@@ -19,17 +22,20 @@ const LayananPage = () => {
 
   const handleSimpanClick = async (e) => {
     e.preventDefault();
-    const added = await addLayanan(nama, jenisKelamin, whatsapp, email, jenisLayanan, keterangan);
+    const added = await addLayanan(nama, jenisKelamin, whatsapp, email, jenisLayanan, kabupaten, puskesmas, keterangan);
     if (added) {
       setNama('');
       setJenisKelamin('');
       setWhatsapp('');
       setEmail('');
       setJenisLayanan('');
+      setKabupaten('');
+      setPuskesmas('');
       setKeterangan('');
 
       setShowPopup(true);
     }
+    await sendLayananForm({nama, jenisKelamin, whatsapp, email, jenisLayanan, kabupaten, puskesmas, keterangan});
   };
 
   const handleClosePopup = () => {
@@ -52,6 +58,8 @@ const LayananPage = () => {
           email={email} setEmail={setEmail}
           whatsapp={whatsapp} setWhatsapp={setWhatsapp}
           jenisLayanan={jenisLayanan} setJenisLayanan={setJenisLayanan}
+          kabupaten={kabupaten} setKabupaten={setKabupaten}
+          puskesmas={puskesmas} setPuskesmas={setPuskesmas}
           keterangan={keterangan} setKeterangan={setKeterangan}
         />
       </div>
