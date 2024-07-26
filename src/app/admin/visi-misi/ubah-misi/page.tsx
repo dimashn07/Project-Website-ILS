@@ -67,7 +67,7 @@ const UbahMisiPage = () => {
 
             <div className="mx-10 mb-20 flex flex-col items-center justify-center">
                 <div className="max-w-lg w-full px-4"> 
-                    <h1 className="text-2xl text-center font-semibold mb-4 mt-8">Ubah Misi</h1>
+                    <h1 className="text-2xl text-center font-semibold mb-4 mt-8">Ubah Data Misi</h1>
                     <FormMisi handleSimpanClick={handleSimpanClick} deskripsi={deskripsi} setDeskripsi={setDeskripsi}/>
                 </div>
             </div>

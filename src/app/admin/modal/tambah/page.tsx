@@ -46,7 +46,7 @@ const TambahModalPage = () => {
 
       <div className="mx-10 mb-20 flex flex-col items-center justify-center">
         <div className="max-w-lg w-full px-4"> 
-          <h1 className="text-2xl text-center font-semibold mb-4 mt-8">Tambah Program</h1>
+          <h1 className="text-2xl text-center font-semibold mb-4 mt-8">Tambah Data Modal</h1>
           <FormModal handleSimpanClick={handleSimpanClick} mode="tambah" deskripsi={deskripsi} setDeskripsi={setDeskripsi} setGambar={setGambar} />
         </div>
       </div>

@@ -74,7 +74,7 @@ const UbahKerjasamaPage = () => {
 
      <div className="mx-10 mb-20 flex flex-col items-center justify-center">
        <div className="max-w-lg w-full px-4"> 
-         <h1 className="text-2xl text-center font-semibold mb-4 mt-8">Ubah Kerjasama</h1>
+         <h1 className="text-2xl text-center font-semibold mb-4 mt-8">Ubah Data Kerjasama</h1>
          <FormKerjasama handleSimpanClick={handleSimpanClick} mode="ubah" instansi={instansi} setInstansi={setInstansi} deskripsi={deskripsi} setDeskripsi={setDeskripsi} setLogo={setLogo} />
        </div>
      </div>

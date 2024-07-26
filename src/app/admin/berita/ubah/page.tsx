@@ -94,7 +94,7 @@ const UbahBeritaPage = () => {
 
       <main className="py-8 md:py-20 lg:py-28 flex flex-col items-center justify-center min-h-screen">
         <div className="max-w-lg w-full px-4">
-          <h1 className="text-2xl text-center font-semibold mb-4">Ubah Berita</h1>
+          <h1 className="text-2xl text-center font-semibold mb-4">Ubah Data Berita</h1>
           <FormBerita
             handleSimpanClick={handleSimpanClick}
             mode='ubah'

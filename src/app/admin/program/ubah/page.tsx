@@ -78,7 +78,7 @@ const UbahProgramPage = () => {
 
       <div className="mx-10 mb-20 flex flex-col items-center justify-center">
         <div className="max-w-lg w-full px-4"> 
-          <h1 className="text-2xl text-center font-semibold mb-4 mt-8">Ubah Program</h1>
+          <h1 className="text-2xl text-center font-semibold mb-4 mt-8">Ubah Data Program</h1>
           <FormProgram handleSimpanClick={handleSimpanClick} mode="ubah" judul={judul} setJudul={setJudul} deskripsi={deskripsi} setDeskripsi={setDeskripsi} beritaURL={berita} setBeritaURL={setBerita} setGambar={setGambar} />
         </div>
       </div>

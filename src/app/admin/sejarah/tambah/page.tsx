@@ -34,7 +34,7 @@ const TambahSejarahPage = () => {
 
       <div className="mx-10 mb-20 flex flex-col items-center justify-center">
         <div className="max-w-lg w-full px-4"> 
-          <h1 className="text-2xl text-center font-semibold mb-4 mt-8">Tambah Paragraf</h1>
+          <h1 className="text-2xl text-center font-semibold mb-4 mt-8">Tambah Data Sejarah</h1>
           <FormSejarah handleSimpanClick={handleSimpanClick} deskripsi={deskripsi} setDeskripsi={setDeskripsi} />
         </div>
       </div>

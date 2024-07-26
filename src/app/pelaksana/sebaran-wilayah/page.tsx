@@ -41,23 +41,23 @@ export default function Home() {
   //       }
   //     ]
   //   },
-  //   {
-  //     nama: "Kabupaten Lampung Tengah",
-  //     alamat: "Jalan KH. Ahmad Dahlan Dusun 1 Kampung Baru Kalirejo Kec. Kalirejo",
-  //     petaMarkers: [
-  //       {
-  //         position: { lat: -5.217780821633308, lng: 104.95981938531605 },
-  //         title: "Inisiatif Lampung Sehat Kabupaten Lampung Tengah",
-  //         address: {
-  //           line1: "Jalan KH. Ahmad Dahlan Dusun 1 Kampung Baru Kalirejo",
-  //           line2: "Kec. Kalirejo",
-  //           line3: "Kab. Lampung Tengah",
-  //           line4: "Lampung 34174, Indonesia",
-  //           link: "https://maps.app.goo.gl/wjndRVarY6dNqsp46"
-  //         }
-  //       }
-  //     ]
-  //   },
+    // {
+    //   nama: "Kabupaten Lampung Tengah",
+    //   alamat: "Jalan KH. Ahmad Dahlan Dusun 1 Kampung Baru Kalirejo Kec. Kalirejo",
+    //   petaMarkers: [
+    //     {
+    //       position: { lat: -5.217780821633308, lng: 104.95981938531605 },
+    //       title: "Inisiatif Lampung Sehat Kabupaten Lampung Tengah",
+    //       address: {
+    //         line1: "Jalan KH. Ahmad Dahlan Dusun 1 Kampung Baru Kalirejo",
+    //         line2: "Kec. Kalirejo",
+    //         line3: "Kab. Lampung Tengah",
+    //         line4: "Lampung 34174, Indonesia",
+    //         link: "https://maps.app.goo.gl/wjndRVarY6dNqsp46"
+    //       }
+    //     }
+    //   ]
+    // },
   //   {
   //     nama: "Kabupaten Lampung Selatan",
   //     alamat: "Jalan Lintas Sumatera Perum Serambi Blok G4 No. 7 Kel. Way Urang Kec. Kalianda",

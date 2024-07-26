@@ -13,11 +13,11 @@ const SejarahPage = () => {
     const router = useRouter();
 
     const handleTambahClick = () => {
-      router.push('admin/sejarah/tambah');
+      router.push('sejarah/tambah');
     };
 
     const handleUbahClick = (sejarah) => {
-      router.push(`admin/sejarah/ubah?id=${sejarah.id}`);
+      router.push(`sejarah/ubah?id=${sejarah.id}`);
     };
 
     useEffect(() => {

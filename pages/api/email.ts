@@ -10,7 +10,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         try {
             await transporter.sendMail({
                 ...mailOptions,
-                to: email,
                 subject: `Layanan lampungsehat.org from ${nama}`,
                 // text: 
                 //     `Name: ${nama}

@@ -12,11 +12,11 @@ const KerjasamaPage = () => {
   const router = useRouter();
 
   const handleTambahClick = () => {
-    router.push('admin/kerjasama/tambah');
+    router.push('./kerjasama/tambah');
   };
 
   const handleUbahClick = (kerjasama) => {
-    router.push(`admin/kerjasama/ubah?id=${kerjasama.id}`);
+    router.push(`./kerjasama/ubah?id=${kerjasama.id}`);
   };
 
   useEffect(() => {

@@ -49,9 +49,9 @@ const LayananTable = () => {
               <th scope="col" className="px-6 py-3 w-1/5"> 
                 Status
               </th>
-              <th scope="col" className="px-6 py-3 w-1/5"> 
+              {/* <th scope="col" className="px-6 py-3 w-1/5"> 
                 Terakhir Diperbarui
-              </th>
+              </th> */}
               <th scope="col" className="px-6 py-3 w-1/5"> 
                 Detail
               </th>
@@ -77,9 +77,10 @@ const LayananTable = () => {
                     {item.status}
                   </div>
                 </td>
-                <td className="px-6 py-4">
-                  {item.timestamp?.toDate().toLocaleDateString()}<br />{item.author}
-                </td>
+                {/* <td className="px-6 py-4">
+                  {item.timestamp?.toDate().toLocaleDateString()} <br />
+                  {item.author}
+                </td> */}
                 <td className="px-6 py-4">
                   <LayananModal layananItem={item} />
                 </td>

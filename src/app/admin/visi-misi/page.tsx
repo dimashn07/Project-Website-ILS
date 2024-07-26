@@ -17,15 +17,15 @@ const VisiMisiPage = () => {
     const router = useRouter();
 
     const handleTambahClick = () => {
-      router.push('admin/visi-misi/tambah');
+      router.push('visi-misi/tambah');
     }
 
     const handleUbahVisiClick = (visi) => {
-      router.push(`admin/visi-misi/ubah-visi?id=${visi.id}`);
+      router.push(`visi-misi/ubah-visi?id=${visi.id}`);
     }
 
     const handleUbahMisiClick = (misi) => {
-      router.push(`admin/visi-misi/ubah-misi?id=${misi.id}`);
+      router.push(`visi-misi/ubah-misi?id=${misi.id}`);
     }
 
     useEffect(() => {

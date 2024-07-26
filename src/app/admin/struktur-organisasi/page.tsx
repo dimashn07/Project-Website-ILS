@@ -13,11 +13,11 @@ const StrukturOrganisasiPage = () => {
     const router = useRouter();
 
     const handleTambahClick = () => {
-      router.push('admin/struktur-organisasi/tambah');
+      router.push('struktur-organisasi/tambah');
     };
 
     const handleUbahClick = (pengurusILS) => {
-      router.push(`admin/struktur-organisasi/ubah?id=${pengurusILS.id}`);
+      router.push(`struktur-organisasi/ubah?id=${pengurusILS.id}`);
     };
 
     useEffect(() => {

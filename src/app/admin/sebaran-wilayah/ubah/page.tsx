@@ -4,7 +4,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import Breadcrumb from "@/components/Common/Breadcrumb";
 import AdminLayout from '../../layout';
 import { useSession } from 'next-auth/react';
-import { addSebaranWilayah } from '@/controller/sebaranWilayah';
+import { addSebaranWilayah } from '@/controller/sebaranWIlayah';
 import { FormSebaranWilayah } from '@/components/Admin/Form/FormSebaranWilayah';
 import { doc, getDoc, serverTimestamp, updateDoc } from 'firebase/firestore';
 import { db } from '@/app/firebaseConfig';
@@ -86,7 +86,7 @@ const TambahProgramPage = () => {
 
       <div className="mx-10 mb-20 flex flex-col items-center justify-center">
         <div className="max-w-lg w-full px-4"> 
-          <h1 className="text-2xl text-center font-semibold mb-4 mt-8">Tambah Program</h1>
+          <h1 className="text-2xl text-center font-semibold mb-4 mt-8">Ubah Data Sebaran Wilayah</h1>
           <FormSebaranWilayah 
             handleSimpanClick={handleSimpanClick} 
             wilayah={wilayah} setWilayah={setWilayah} 

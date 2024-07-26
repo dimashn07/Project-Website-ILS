@@ -13,7 +13,14 @@ const SignUpPage = () => {
   const router = useRouter();
 
   const signUp = () => {
-    createUserWithEmailAndPassword(auth, email, password);
+    createUserWithEmailAndPassword(auth, email, password)
+    .then((userCredential) => {
+      alert('Akun berhasil terdaftar. Silahkan Login!');
+    })
+    .catch((error) => {
+      const errorMessage = error.message;
+      alert(errorMessage);
+    });
   };
 
   const handleLoginClick = () => {

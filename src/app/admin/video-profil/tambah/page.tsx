@@ -49,7 +49,7 @@ const TambahVideoProfilPage = () => {
 
       <div className="mx-10 mb-20 flex flex-col items-center justify-center">
         <div className="max-w-lg w-full px-4"> 
-          <h1 className="text-2xl text-center font-semibold mb-4 mt-8">Tambah Link Video</h1>
+          <h1 className="text-2xl text-center font-semibold mb-4 mt-8">Tambah Data Video Profil</h1>
           <FormVideoProfil handleSimpanClick={handleSimpanClick} mode="tambah" deskripsi={deskripsi} setDeskripsi={setDeskripsi} videoURL={link} setVideoURL={setLink} setGambar={setGambar}/>
         </div>
       </div>

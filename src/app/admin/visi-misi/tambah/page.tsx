@@ -51,7 +51,7 @@ const TambahVisiMisiPage = () => {
                     <FormVisi handleSimpanClick={handleSimpanVisiClick} deskripsi={deskripsi} setDeskripsi={setDeskripsi}/>
                 </div> */}
                 <div className="max-w-lg w-full px-4"> 
-                    <h1 className="text-2xl text-center font-semibold mb-4 mt-8">Tambah Misi</h1>
+                    <h1 className="text-2xl text-center font-semibold mb-4 mt-8">Tambah Data Misi</h1>
                     <FormMisi handleSimpanClick={handleSimpanMisiClick} deskripsi={deskripsi} setDeskripsi={setDeskripsi}/>
                 </div>
             </div>

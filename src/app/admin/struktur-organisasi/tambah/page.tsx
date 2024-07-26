@@ -50,7 +50,7 @@ const TambahStrukturOrganisasiPage = () => {
 
       <div className="mx-10 mb-20 flex flex-col items-center justify-center">
         <div className="max-w-lg w-full px-4"> 
-          <h1 className="text-2xl text-center font-semibold mb-4 mt-8">Tambah Pengurus ILS</h1>
+          <h1 className="text-2xl text-center font-semibold mb-4 mt-8">Tambah Data Pengurus ILS</h1>
           <FormStrukturOrganisasi handleSimpanClick={handleSimpanClick} mode="tambah" kategori={kategori} setKategori={setKategori} nama={nama} setNama={setNama} jabatan={jabatan} setJabatan={setJabatan} setFoto={setFoto} />
         </div>
       </div>

@@ -229,7 +229,7 @@ const BlogDetailPage = () => {
                 </div>
                 <div>
 
-                  <p className="mb-8 text-base font-medium leading-relaxed text-body-color sm:text-lg sm:leading-relaxed lg:text-base lg:leading-relaxed xl:text-lg xl:leading-relaxed">
+                  <p className="mb-8 text-base text-justify font-medium leading-relaxed text-body-color sm:text-lg sm:leading-relaxed lg:text-base lg:leading-relaxed xl:text-lg xl:leading-relaxed">
                     <div
                       dangerouslySetInnerHTML={{ __html: berita.content }}
                       className="prose dark:prose-dark"

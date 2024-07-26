@@ -16,19 +16,19 @@ const menuData: Menu[] = [
       {
         id: 21,
         title: "Sejarah",
-        path: "/about/sejarah",
+        path: "/tentang-kami/sejarah",
         newTab: false,
       },
       {
         id: 22,
         title: "Visi & Misi",
-        path: "/about/visimisi",
+        path: "/tentang-kami/visimisi",
         newTab: false,
       },
       {
         id: 23,
         title: "Struktur Organisasi",
-        path: "/about/strukturorganisasi",
+        path: "/tentang-kami/strukturorganisasi",
         newTab: false,
       },
     ],
