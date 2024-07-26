@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash, faPenToSquare } from '@fortawesome/free-solid-svg-icons';
 import { useRouter } from "next/navigation";
 import { useSession } from 'next-auth/react';
-import { deleteSebaranWilayah, getSebaranWilayah } from '@/controller/sebaranWilayah';
+import { deleteSebaranWilayah, getSebaranWilayah } from '@/controller/sebaranWIlayah';
 
 const SebaranWilayahPage = () => {
   const [sebaranWilayah, setSebaranWilayah] = useState<{ [key: string]: any }[]>([]);
