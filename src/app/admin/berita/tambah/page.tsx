@@ -21,10 +21,13 @@ const TambahBeritaPage = () => {
   const handleSimpanClick = async(e) => {
     e.preventDefault();
     try {
-      if(coverImage){
+      if (coverImage && contentImage) { 
         const coverURL = await uploadCoverImage(coverImage);
+        console.log('Cover URL:', coverURL);  
         const contentURL = await uploadContentImage(contentImage);
+        console.log('Content URL:', contentURL);  
         const added = await addBerita(title, content, contentURL, category, city, tags, coverURL, session);
+        console.log('Added:', added); 
         if (added) {
           setTitle('');
           setContent('');
