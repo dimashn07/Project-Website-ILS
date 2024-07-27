@@ -367,7 +367,7 @@ const BlogDetailPage = () => {
           </div>
         </div>
       </section>
-    <>
+    </>
   );
 };
 
