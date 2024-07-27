@@ -5,7 +5,6 @@ import SharePost from "@/components/Berita/SharePost";
 import TagButton from "@/components/Berita/TagButton";
 
 import React from 'react'
-import {Suspense} from "react";
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation'
 import { doc, getDoc, query, where, getDocs, collection } from "firebase/firestore";
@@ -171,7 +170,7 @@ const BlogDetailPage = () => {
   }
 
   return (
-    <Suspense fallback={<>divLoading...<div/>}>
+    <>
       <section className="overflow-hidden pb-[120px] pt-[180px]">
         <div className="container">
           <div className="-mx-4 flex flex-wrap">
@@ -368,7 +367,7 @@ const BlogDetailPage = () => {
           </div>
         </div>
       </section>
-    </Suspense>
+    <>
   );
 };
 
