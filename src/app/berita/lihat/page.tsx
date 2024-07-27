@@ -5,6 +5,7 @@ import SharePost from "@/components/Berita/SharePost";
 import TagButton from "@/components/Berita/TagButton";
 
 import React from 'react'
+import {Suspense} from "react";
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation'
 import { doc, getDoc, query, where, getDocs, collection } from "firebase/firestore";
