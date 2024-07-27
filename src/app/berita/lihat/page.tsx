@@ -170,7 +170,7 @@ const BlogDetailPage = () => {
   }
 
   return (
-    <>
+    <Suspense fallback={<>divLoading...<div/>}>
       <section className="overflow-hidden pb-[120px] pt-[180px]">
         <div className="container">
           <div className="-mx-4 flex flex-wrap">
@@ -367,7 +367,7 @@ const BlogDetailPage = () => {
           </div>
         </div>
       </section>
-    </>
+    </Suspense>
   );
 };
 
